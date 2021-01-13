@@ -19,7 +19,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect('mongodb+srv://captainroh:shwnsdud12@cluster0.lspep.mongodb.net/Cluster0?retryWrites=true&w=majority');//db 연결시 고쳐야 함
+mongoose.connect('mongodb+srv://captainroh:shwnsdud12@cluster0.lspep.mongodb.net/Cluster0?retryWrites=true&w=majority');//db 연결시 고쳐야 
 var db = mongoose.connection;
 
 db.once('open',function(){
