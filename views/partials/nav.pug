@@ -1,0 +1,25 @@
+nav
+	div
+		div My Website
+		button(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
+			span
+		div#navbarSupportedContent
+			ul
+				li
+					a(href="/") Home
+					a(href="/about") About
+					a(href="/posts") Board
+			ul
+				if isAuthnticated
+					li
+						a(href=`/users/${currentUser.username}`) My Account
+					li
+						a(href="/logout") Logout
+				else
+					p=isAuthnticated
+					li
+						a(href="/users/new") Sign Up
+					li
+						a(href="/login") Login
+				li
+					a(href="/users") Users

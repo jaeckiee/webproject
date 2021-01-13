@@ -1,0 +1,57 @@
+doctype html
+html
+    head
+        include ../partials/head.pug
+    body
+        include ../partials/nav.pug
+
+        div
+            h3 Edit User
+            form(action="/users/"+user.username+"?_method=put", method="post")
+                div
+                    labell(for="currentPassword") Current Password*
+                    div
+                        input#currentPassword(class=(errors.currentPassword)?"is-invalid":"", type="password", name="currentPassword", value="")
+                        if errors.currentPassword
+                            span= errors.currentPassword.message
+                hr
+                div
+                    label(for="username") Username*
+                    div
+                        input#username(class=(errors.username)?"is-invalid":"", type="text", name="username", value=user.username)
+                        if errors.username
+                            span= errors.username.message
+                div
+                    label(for="name") Name*
+                    div
+                        input#name(class=(errors.name)?"is-invalid":"", type="text", name="name", value=user.name)
+                        if errors.name
+                            span= errors.name.message
+                div
+                    label(for="currentPassword") Email
+                    div
+                        input#email(class=(errors.email)?"is-invalid":"", type="text", name="email", value=user.email)
+                        if errors.email
+                            span= errors.email.message
+                div
+                    label(for="newPassword") New Password
+                    div
+                        input#newPassword(class=(errors.newPassword)?"is-invalid":"", type="password", name="newPassword", value="")
+                        if errors.newPassword
+                            span= errors.newPassword.message
+                div
+                    label(for="passwordConfirmation") Password Confirmation
+                    div
+                        input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="password", name="passwordConfirmation", value="")
+                        if errors.passwordConfirmation
+                            span= errors.passwordConfirmation.message
+
+                p
+                    small *Required
+
+                if errors.unhandled
+                    div= errors.unhandled
+                    
+                div
+                    a(href="/users/"+user.username) Back
+                    button(type="submit") Submit

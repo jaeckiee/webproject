@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        include ../partials/head.pug
+    body
+        include ../partials/nav.pug
+
+        div
+            h2 Board
+            table
+                thead
+                    tr
+                        th(scope="col") Title
+                        th(scope="col") Date
+                tbody
+                    if (posts == null || posts.length == 0)
+                        tr
+                            td(colspan=2) There is no data to show :(
+                    each post in posts
+                        tr
+                            td
+                                a(href="/posts/"+post._id)
+                                    div= post.title
+                            td
+                                span(data-date=post.createdAt)
+
+            div
+                a(href="/posts/new") New

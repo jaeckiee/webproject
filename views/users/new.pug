@@ -1,0 +1,49 @@
+doctype html
+html
+    head
+        include ../partials/head.pug
+    body
+        include ../partials/nav.pug
+
+        div
+            h3 New User
+            form(action="/users", method="post")
+                div
+                    label(for="username") Username*
+                    div
+                        input#username(class=(errors.username)?"is-invalid":"", type="text", name="username", value="")
+                        if errors.username
+                            span= errors.username.message
+                div
+                    label(for="name") Name*
+                    div
+                        input#name(class=(errors.name)?"is-invalid":"", type="text", name="name", value="")
+                        if errors.name
+                            span= errors.name.message
+                div
+                    label(for="email") Email
+                    div
+                        input#email(class=(errors.email)?"is-invalid":"", type="text", name="email", value="")
+                        if errors.email
+                            span= errors.email.message
+                div
+                    label(for="password") Password*
+                    div
+                        input#password(class=(errors.password)?"is-invalid":"", type="password", name="password", value="")
+                        if errors.password
+                            span= errors.password.message
+                div
+                    label(for="passwordConfirmation") Password Confirmation*
+                    div
+                        input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
+                        if errors.passwordConfirmination
+                            span= errors.passwordConfirmination.message
+                
+                p
+                    small *Required
+
+                if errors.unhandled
+                    div= errors.unhandled
+
+                div
+                    button(type="submit") Submit

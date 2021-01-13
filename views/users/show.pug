@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        include ../partials/head.pug
+    body
+        include ../partials/nav.pug
+
+        div
+            h3= user.username
+
+            form(action="/users", method="post")
+                fieldset(disabled)
+                    div
+                        label(for="name") Name
+                        div
+                            input#name(type="text", name="name", value=user.name)
+                    div
+                        label(for="email") Email
+                        div
+                            input#email(type="text", name="email", value=user.email)
+            
+            div
+                a(href="/users") Back
+                a(href="/users/"+user.username+"/edit") Edit
+                form(action="/users/"+user.username+"?_method=delete", method="post")
+                    a(href="javascript:void(0)", onclick="confirm('Do you want to delete this user?')?this.parentElement.submit():null;") Delete
