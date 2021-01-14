@@ -2,14 +2,20 @@ import passport from "passport";
 import User from "../models/User.js";
 
 var LocalStrategy = require('passport-local').Strategy;
+var NaverStrategy = require('passport-naver').Strategy;
 
 passport.serializeUser((user,done) => {
+	console.log('passport session save:', user);
 	done(null,user.id);
 });
 passport.deserializeUser((id,done) => {
+	console.log("passport session get id : ", id);
+	done(null,id);
+	/*
 	User.findOne({_id:id}, (err,user) => {
 		done(err,user);
 	});
+	*/
 });
 
 passport.use('local-login',
@@ -37,4 +43,20 @@ passport.use('local-login',
   )
 );
 
+passport.use('naver-login',
+			 new NaverStrategy({
+	clientID: "N_oyYPyV2ByoW35pUP1F",
+	clientSecret: "NPzMLHo1oQ",
+	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
+},	
+	(accessToken, refreshToken, profile,done) => {
+		var user = {
+			id : profile.id,
+			email: profile.emails[0].value
+		}
+		console.log(profile);
+		done(null,user);
+	}
+							  )
+			);
 export default passport;
