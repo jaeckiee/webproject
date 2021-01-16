@@ -58,6 +58,6 @@ router.get('/login/naver', passport.authenticate('naver-login',null),(req,res) =
 
 router.get('/login/naver/callback', passport.authenticate('naver-login',{
 	successRedirect: '/',
-	failureRedirect: '/login'
+	failureRedirect: '/users/new'
 }));
 module.exports = router;

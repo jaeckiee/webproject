@@ -50,12 +50,18 @@ passport.use('naver-login',
 	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
 },	
 	(accessToken, refreshToken, profile,done) => {
-		var user = {
+		var finduser = {
 			id : profile.id,
 			email: profile.emails[0].value
 		}
-		console.log(profile);
-		done(null,user);
+		User.findOne({email:finduser.email}).exec((err,user) => {
+			if(user){
+				return done(null,user);
+			}
+			else{
+				return done(null,false);
+			}
+		});
 	}
 							  )
 			);
