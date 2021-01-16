@@ -2,6 +2,12 @@ nav
 	div
 		button(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
 			span
+		div
+			form(action="/posts/search" method="get")
+				div
+					input(type="search" id="search" name="search" placeholder="검색어 입력")
+				div
+					button(type="submit") Search
 		div#navbarSupportedContent
 			ul
 				li

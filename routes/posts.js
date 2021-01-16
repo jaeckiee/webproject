@@ -21,6 +21,15 @@ router.get('/new', function(req, res) {
     res.render('posts/new', { post: post, errors: errors });
 });
 
+//search
+router.get('/search', function(req, res) {
+    Post.find({title: req.query.search})
+    .exec(function(err, posts) {
+        if (err) return res.json(err);
+        res.render('posts/index', { posts: posts });
+    });
+});
+
 // Create
 router.post('/', function(req, res) {
     // req.body.author = req.user._id;
@@ -56,7 +65,7 @@ router.get('/:id/edit', function(req, res) {
     }
     else {
         post._id = req.params.id;
-        res.render('posTs/edit', { post: post, errors: errors });
+        res.render('posts/edit', { post: post, errors: errors });
     }
 });
 
