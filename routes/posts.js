@@ -2,7 +2,7 @@ import express from "express";
 var router = express.Router();
 import Post from "../models/Post.js";
 import util from "../util.js";
-import Comment from "../models/Comment.js"
+
 // Index
 router.get('/', function(req, res) {
     Post.find({})
@@ -22,7 +22,7 @@ router.get('/new', function(req, res) {
 });
 
 //search
-router.get('/search', function(req, res) {
+router.get('/search', function(req, res){
     Post.find({title: req.query.search})
     .exec(function(err, posts) {
         if (err) return res.json(err);
@@ -44,21 +44,13 @@ router.post('/', function(req, res) {
 });
 
 // Show
-router.get('/:id', function(req, res){ // 2
-  var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
-  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
-
-  Promise.all([
-      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
-      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
-    ])
-    .then(([post, comments]) => {
-      res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
-    })
-    .catch((err) => {
-      console.log('err: ', err);
-      return res.json(err);
-    });
+router.get('/:id', function(req, res) {
+    Post.findOne({ _id: req.params.id })
+        // .populate('author')
+        .exec(function(err, post) {
+            if (err) return res.json(err);
+            res.render('posts/show', { post: post });
+        });
 });
 
 // Edit

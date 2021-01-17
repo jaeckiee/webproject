@@ -17,6 +17,7 @@ nav
 			ul
 				if isAuthnticated
 					li
+						p= currentUser
 						a(href=`/users/${currentUser.username}`) My Account
 					li
 						a(href="/logout") Logout
