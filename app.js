@@ -11,7 +11,8 @@ import methodOverride from "method-override";
 import homeRouter from "./routes/home.js";
 import postRouter from "./routes/posts.js";
 import userRouter from "./routes/users.js";
-
+import commentRouter from "./routes/comments.js";
+import util from "./util";
 const app = express();
 const PORT = 3000;
 
@@ -51,7 +52,7 @@ app.use((req,res,next) => {
 });
 
 app.use("/",homeRouter);
-app.use("/posts", postRouter);
+app.use("/posts",util.getPostQueryString, postRouter);
 app.use("/users", userRouter);
-
+app.use("/comments",util.getPostQueryString, commentRouter);
 export default app;

@@ -10,12 +10,9 @@ passport.serializeUser((user,done) => {
 });
 passport.deserializeUser((id,done) => {
 	console.log("passport session get id : ", id);
-	done(null,id);
-	/*
 	User.findOne({_id:id}, (err,user) => {
 		done(err,user);
 	});
-	*/
 });
 
 passport.use('local-login',
@@ -45,9 +42,9 @@ passport.use('local-login',
 
 passport.use('naver-login',
 			 new NaverStrategy({
-	clientID: "N_oyYPyV2ByoW35pUP1F",
-	clientSecret: "NPzMLHo1oQ",
-	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
+	clientID: "S6gHT3hjx63FrfWdmFjL",
+	clientSecret: "_wMP5Tu6eu",
+	callbackURL: "https://webproject-kmllh.run.goorm.io/login/naver/callback"
 },	
 	(accessToken, refreshToken, profile,done) => {
 		var finduser = {
