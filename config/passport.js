@@ -9,13 +9,10 @@ passport.serializeUser((user,done) => {
 	done(null,user.id);
 });
 passport.deserializeUser((id,done) => {
-	console.log("passport session get id : ", id);
-	done(null,id);
-	/*
 	User.findOne({_id:id}, (err,user) => {
 		done(err,user);
 	});
-	*/
+	
 });
 
 passport.use('local-login',
@@ -50,6 +47,7 @@ passport.use('naver-login',
 	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
 },	
 	(accessToken, refreshToken, profile,done) => {
+		console.log(profile);
 		var finduser = {
 			id : profile.id,
 			email: profile.emails[0].value
@@ -59,7 +57,7 @@ passport.use('naver-login',
 				return done(null,user);
 			}
 			else{
-				return done(null,false);
+				return done(null,false,{message:'등록된 정보가 없어 회원가입이 필요합니다.'});
 			}
 		});
 	}

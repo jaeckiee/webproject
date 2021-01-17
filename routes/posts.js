@@ -56,7 +56,7 @@ router.get('/:id/edit', function(req, res) {
     }
     else {
         post._id = req.params.id;
-        res.render('posTs/edit', { post: post, errors: errors });
+        res.render('posts/edit', { post: post, errors: errors });
     }
 });
 
