@@ -9,7 +9,7 @@ html
             h3 Edit User
             form(action="/users/"+user.username+"?_method=put", method="post")
                 div
-                    labell(for="currentPassword") Current Password*
+                    label(for="currentPassword") Current Password*
                     div
                         input#currentPassword(class=(errors.currentPassword)?"is-invalid":"", type="password", name="currentPassword", value="")
                         if errors.currentPassword

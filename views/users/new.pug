@@ -37,7 +37,7 @@ html
                 div
                     label(for="passwordConfirmation") Password Confirmation*
                     div
-                        input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
+                        input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="password", name="passwordConfirmation", value="")
                         if errors.passwordConfirmination
                             span= errors.passwordConfirmination.message
                 

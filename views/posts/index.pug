@@ -11,6 +11,7 @@ html
                 thead
                     tr
                         th(scope="col") Title
+                        th(scope="col") Author
                         th(scope="col") Date
                 tbody
                     p #{posts.updatedAt}
@@ -22,8 +23,11 @@ html
                             td
                                 a(href="/posts/"+post._id)
                                     div= post.title
-                            td
+                            td.author
+                                div= (post.author) ? post.author.username : ""
+                            td.date
                                 span(data-date=post.createdAt)
 
             div
-                a(href="/posts/new") New
+                if isAuthenticated
+                    a(href="/posts/new") New

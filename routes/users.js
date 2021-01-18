@@ -3,6 +3,7 @@ var router = express.Router();
 import User from "../models/User.js";
 import util from "../util.js";
 import passport from "../config/passport.js";
+
 // Index
 router.get('/', function(req, res) {
     User.find({})
@@ -33,21 +34,21 @@ router.post('/', function(req, res) {
             req.flash('user', req.body);
             req.flash('errors', util.parseError(err));
             return res.redirect('/users/new');
-        }
+        }77
         res.redirect('/users');
     });
 });
 
 // Show
-router.get('/:username', function(req, res) {
+router.get('/:username', util.isLoggedin, checkPermission, function(req, res) {
     User.findOne({username: req.params.username}, function(err, user) {
-        if (err) return res.json(err);
+        if (err) {console.log(err);return res.json(err);}
         res.render('users/show', {user: user});
     });
 });
 
 // Edit
-router.get('/:username/edit', function(req, res) {
+router.get('/:username/edit', util.isLoggedin, checkPermission, function(req, res) {
     var user = req.flash('user')[0];
     var errors = req.flash('errors')[0] || {};
     if (!user) {
@@ -62,7 +63,7 @@ router.get('/:username/edit', function(req, res) {
 });
 
 // Update
-router.put('/:username', function(req, res, next) {
+router.put('/:username', util.isLoggedin, checkPermission, function(req, res, next) {
     User.findOne({username:req.params.username})
         .select('password')
         .exec(function(err, user) {
@@ -94,3 +95,14 @@ router.delete('/:username', function(req, res) {
 });
 
 module.exports = router;
+
+// Private functions
+function checkPermission(req, res, next) {
+	console.log(req.params.username);
+	User.findOne({username: req.params.username}, function(err, user) {
+		if (err) return res.json(err);
+		if (user.id != req.user.id) return util.noPermission(req, res);
+		
+		next();
+	})
+}
