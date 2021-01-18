@@ -12,6 +12,7 @@ var storage = multer.diskStorage({	// multer가 저장할 때 파일 간 이름 
 var upload = multer({ storage: storage });
 import Post from "../models/Post.js";
 import File from "../models/File.js";
+import Comment from "../models/Comment.js";
 import util from "../util.js";
 
 // Index
@@ -62,23 +63,20 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function(re
 
 // Show
 router.get('/:id', function(req, res) {
-    Post.findOne({ _id: req.params.id })
-        .populate({path: 'author', select: 'username'})
-		.populate({path: 'attachment', match: {isDeleted: false}})
-        .exec(function(err, post) {
-            if (err) return res.json(err);
-            res.render('posts/show', { post: post });
-        });
-});
+	var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+	var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
 
-router.get('/img', function(req, res) {
-	var filePath = path.join(__dirname, '..', 'uploadedFiles', 'unknown.png');
-	fs.readFile(filePath, function(err, data) {
-		res.writeHead(200, { 'Content-Type': 'image/png' });
-		console.log("Tlqkf" +data);
-		res.write(data);
-		res.end();
-	});
+	Promise.all([
+		Post.findOne({_id: req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment', match: {isDeleted: false}}),
+		Comment.find({post: req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+	])
+		.then(([post, comments]) => {
+			res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
+		})
+		.catch((err) => {
+			console.log('err: ', err);
+			return res.json(err);
+		});
 });
 
 // Edit
