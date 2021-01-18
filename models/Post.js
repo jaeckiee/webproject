@@ -1,13 +1,11 @@
 var mongoose = require('mongoose');
-var Counter = require('./Counter');
 
 // schema
 var postSchema = mongoose.Schema({
     title: {type: String, required: [true, 'Title is required!']},
     body: {type: String, required: [true, 'Body is required!']},
 	author: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},	// ref: 'user'를 통해 user.id와 post.author를 연결(relationship)
-	// views: {type: Number, default: 0},		// 조회수
-	// numId: {type: Number},					// 글번호
+	attachment: {type: mongoose.Schema.Types.ObjectId, ref: 'file'},
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date},
 });

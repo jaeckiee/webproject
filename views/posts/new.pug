@@ -14,12 +14,15 @@ html
                         a(href="/posts") Board
                     li New Post
 
-            form(action="/posts", method="post")
+            form(action="/posts", enctype="multipart/form-data", method="post")
                 div
                     label(for="title") Title
                     input#title(class=(errors.title)?"is-invalid":"", type="text", name="title", value="")
                     if (errors.title)
                         span= errors.title.message
+                div
+                    label(for="attachment") Attachment
+                    input#attachment(type="file", name="attachment")
                 div
                     label(for="body") Body
                     textarea#body(class=(errors.body)?"is-invalid":"", name="body", rows="5")

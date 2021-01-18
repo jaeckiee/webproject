@@ -18,6 +18,11 @@ html
                 h5= post.title
                 div
                     div
+                        if post.attachment
+                            div
+                                small= "📁 Attachment: "+post.attachment.originalFileName+" ("+util.bytesToSize(post.attachment.size)+")"
+                            div
+                                img(src="../uploadedFiles/"+post.attachment.originalFileName)
                         div= post.body
                     div
                         div
@@ -34,6 +39,7 @@ html
             
             div
                 a(href="/posts") Back
-                a(href="/posts/"+post._id+"/edit") Edit
-                form(action="/posts/"+post._id+"?_method=delete", method="post")
-                    button(type="submit") Delete
+                if (isAuthenticated && post.author && currentUser.id == post.author.id)
+                    a(href="/posts/"+post._id+"/edit") Edit
+                    form(action="/posts/"+post._id+"?_method=delete", method="post")
+                        button(type="submit") Delete

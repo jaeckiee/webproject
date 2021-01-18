@@ -17,7 +17,7 @@ html
                 div
                     label(for="password") Password
                     div
-                        input#password(class=(errors.password)?"is-valid":"", type="text", name="password", value="")
+                        input#password(class=(errors.password)?"is-valid":"", type="password", name="password", value="")
                         if errors.password
                             p= errors.password
                 

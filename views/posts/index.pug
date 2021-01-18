@@ -28,4 +28,5 @@ html
                                 span(data-date=post.createdAt)
 
             div
-                a(href="/posts/new") New
+                if isAuthenticated
+                    a(href="/posts/new") New

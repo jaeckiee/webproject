@@ -11,6 +11,7 @@ import methodOverride from "method-override";
 import homeRouter from "./routes/home.js";
 import postRouter from "./routes/posts.js";
 import userRouter from "./routes/users.js";
+import util from "./util.js";
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +20,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect('mongodb+srv://Cynki:password@contact-book.juila.mongodb.net/contact?retryWrites=true&w=majority');//db 연결시 고쳐야 
+mongoose.connect('mongodb+srv://Cynki:ok40cy9k@contact-book.juila.mongodb.net/contact?retryWrites=true&w=majority');//db 연결시 고쳐야 
 var db = mongoose.connection;
 
 db.once('open',function(){
@@ -45,8 +46,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req,res,next) => {
-	res.locals.isAuthnticated = req.isAuthenticated();
+	res.locals.isAuthenticated = req.isAuthenticated();
 	res.locals.currentUser = req.user;
+	res.locals.util = util;
 	next();
 });
 
