@@ -1,3 +1,3 @@
-#EIGHTWIKI
+# EIGHTWIKI
 
 8커위키프로젝트 (2020 ~ 2021)
