@@ -52,4 +52,13 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+router.get('/login/naver', passport.authenticate('naver-login',null),(req,res) => {
+	console.log("naver login");	
+});
+
+router.get('/login/naver/callback', passport.authenticate('naver-login',{
+	successRedirect: '/',
+	failureRedirect: '/users/new',
+	failureFlash : true
+}));
 module.exports = router;

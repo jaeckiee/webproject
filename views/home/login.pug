@@ -1,28 +1,29 @@
 doctype html
 html
-    head
-        include ../partials/head.pug
-    body
-        include ../partials/nav.pug
+	head
+		include ../partials/head.pug
+	body
+		include ../partials/nav.pug
 
-        div
-            h3 Login
-            form(action="/login", method="post")
-                div
-                    label(for="username") Username
-                    div
-                        input#username(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
-                        if errors.username
-                            span= errors.username
-                div
-                    label(for="password") Password
-                    div
-                        input#password(class=(errors.password)?"is-valid":"", type="password", name="password", value="")
-                        if errors.password
-                            p= errors.password
+		div
+			h3 Login
+			form(action="/login", method="post")
+				div
+					label(for="username") Username
+					div
+						input#username(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
+						if errors.username
+							span= errors.username
+				div
+					label(for="password") Password
+					div
+						input#password(class=(errors.password)?"is-valid":"", type="text", name="password", value="")
+						if errors.password
+							p= errors.password
                 
-                if errors.login
-                    p= errors.login
+				if errors.login
+					p= errors.login
                 
-                div
-                    input(type="submit", value="Submit")
+				div
+					input(type="submit", value="Submit")
+					a(href="/login/naver") 네이버로 로그인

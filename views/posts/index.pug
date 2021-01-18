@@ -14,6 +14,7 @@ html
                         th(scope="col") Author
                         th(scope="col") Date
                 tbody
+                    p #{posts.updatedAt}
                     if (posts == null || posts.length == 0)
                         tr
                             td(colspan=2) There is no data to show :(

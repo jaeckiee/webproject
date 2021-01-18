@@ -32,6 +32,15 @@ router.get('/new', util.isLoggedin, function(req, res) {
     res.render('posts/new', { post: post, errors: errors });
 });
 
+//search
+router.get('/search', function(req, res){
+    Post.find({title: req.query.search})
+    .exec(function(err, posts) {
+        if (err) return res.json(err);
+        res.render('posts/index', { posts: posts });
+    });
+});
+
 // Create
 router.post('/', util.isLoggedin, upload.single('attachment'), async function(req, res) {
 	var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined;	// form에서 받아들인 file을 토대로 File 인스턴스 생성

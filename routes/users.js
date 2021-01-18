@@ -2,8 +2,9 @@ import express from "express";
 var router = express.Router();
 import User from "../models/User.js";
 import util from "../util.js";
+import passport from "../config/passport.js";
 
-// Index - index는 숨겨둠
+// Index
 router.get('/', function(req, res) {
     User.find({})
         .sort({username:1})
@@ -17,7 +18,13 @@ router.get('/', function(req, res) {
 router.get('/new', function(req, res) {
     var user = req.flash('user')[0] || {};
     var errors = req.flash('errors')[0] || {};
-    res.render('users/new', { user: user, errors: errors });
+    var flash = req.flash();
+	console.log(flash);
+	var error = '';
+	if(flash){
+		error = flash.error;
+	}
+    res.render('users/new', { user: user, errors: errors, error: error });
 });
 
 // Create

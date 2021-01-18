@@ -2,14 +2,17 @@ import passport from "passport";
 import User from "../models/User.js";
 
 var LocalStrategy = require('passport-local').Strategy;
+var NaverStrategy = require('passport-naver').Strategy;
 
 passport.serializeUser((user,done) => {
+	console.log('passport session save:', user);
 	done(null,user.id);
 });
 passport.deserializeUser((id,done) => {
 	User.findOne({_id:id}, (err,user) => {
 		done(err,user);
 	});
+	
 });
 
 passport.use('local-login',
@@ -37,4 +40,27 @@ passport.use('local-login',
   )
 );
 
+passport.use('naver-login',
+			 new NaverStrategy({
+	clientID: "N_oyYPyV2ByoW35pUP1F",
+	clientSecret: "NPzMLHo1oQ",
+	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
+},	
+	(accessToken, refreshToken, profile,done) => {
+		console.log(profile);
+		var finduser = {
+			id : profile.id,
+			email: profile.emails[0].value
+		}
+		User.findOne({email:finduser.email}).exec((err,user) => {
+			if(user){
+				return done(null,user);
+			}
+			else{
+				return done(null,false,{message:'등록된 정보가 없어 회원가입이 필요합니다.'});
+			}
+		});
+	}
+							  )
+			);
 export default passport;
