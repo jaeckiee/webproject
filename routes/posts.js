@@ -35,7 +35,7 @@ router.get('/new', util.isLoggedin, function(req, res) {
 
 //search
 router.get('/search', function(req, res){
-    Post.find({title: { $regex: new RegExp(req.query.search, 'g') }})
+    Post.find({title: { $regex: new RegExp(req.query.search) }})
     .exec(function(err, posts) {
         if (err) return res.json(err);
         res.render('posts/index', { posts: posts });
