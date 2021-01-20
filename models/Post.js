@@ -7,7 +7,7 @@ var postSchema = mongoose.Schema({
 	author: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},	// ref: 'user'를 통해 user.id와 post.author를 연결(relationship)
 	attachment: {type: mongoose.Schema.Types.ObjectId, ref: 'file'},
     createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date},
+    updatedAt: {type: Date, default: Date.now}
 });
 
 // pre: 첫 번째 파라미터 ('save')함수가 발생하기 전에 callback을 실행.
