@@ -1,0 +1,13 @@
+aside
+	div
+		h5 최근 변경
+		div
+			ul
+				each post in asides
+					li
+						a(href="/posts/"+post._id)
+							=post.title
+							if (post.updatedAt.getFullYear()===datenow.getFullYear() && post.updatedAt.getMonth()===datenow.getMonth() && post.updatedAt.getDate()===datenow.getDate())
+								span(data-date-time=post.createdAt)
+							else
+								span(data-date=post.createdAt)
