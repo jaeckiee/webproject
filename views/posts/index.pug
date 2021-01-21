@@ -5,14 +5,13 @@ html
     body
         include ../partials/nav.pug
         include ../partials/aside.pug
-        div
-            h2 Board
+        div#board
             table
                 thead
                     tr
-                        th(scope="col") Title
+                        th#post-title(scope="col") Title
                         th(scope="col") Author
-                        th(scope="col") Date
+                        th#post-date(scope="col") Date
                 tbody
                     p #{posts.updatedAt}
                     if (posts == null || posts.length == 0)

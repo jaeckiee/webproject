@@ -1,5 +1,5 @@
 nav
-	div
+	div#header
 		button(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
 			span
 		div
@@ -8,23 +8,16 @@ nav
 					input(type="search" id="search" name="search" placeholder="검색어 입력")
 				div
 					button(type="submit") Search
-		div#navbarSupportedContent
-			ul
-				li
-					a(href="/") Home
-					a(href="/about") About
-					a(href="/posts") Board
-			ul
-				if isAuthenticated
-					li
-						p= currentUser
-						a(href=`/users/${currentUser.username}`) My Account
-					li
-						a(href="/logout") Logout
-				else
-					li
-						a(href="/users/new") Sign Up
-					li
-						a(href="/login") Login
-				li
-					a(href="/users") Users
+		div#header-nav1
+				a#logo(href="/") 8커위키
+				a(href="/") Home
+				a(href="/about") About
+				a(href="/posts") Board
+		div#header-nav2
+			if isAuthenticated
+				a(href=`/users/${currentUser.username}`) My Account
+				a(href="/logout") Logout
+			else
+				a(href="/users/new") Sign Up
+				a(href="/login") Login
+			a(href="/users") Users

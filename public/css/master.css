@@ -1,3 +1,23 @@
-button {
-	
+body {
+	background-color: rgb(255, 255, 128);
+}
+
+#header {}
+
+#header-nav1 {
+	background: #43a047;
+	text-align: left;
+}
+
+#header-nav1 a {
+	color : #fff; padding:10px 0px 10px 13px; display:inline-block;
+}
+
+#header-nav2 {
+	background : #4caf50;
+	text-align : right;
+}
+
+#header-nav2 a {
+	color : #fff; padding:10px 0px 10px 13px; display:inline-block;
 }

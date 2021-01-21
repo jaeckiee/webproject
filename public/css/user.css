@@ -1,0 +1,45 @@
+#singUp {
+	text-align: center;
+}
+#singUp h3 {
+	color : blue;
+	font-size : 28px;
+	padding : 20px 20px 20px 20px;
+}
+#singUp-form{
+	background:#fff;
+	display:inline-block;
+}
+
+#field label{
+	display:inline-block;
+	padding : 10px 20px 5px 0px;
+}
+
+
+#field #singUp-error{
+	display:block;
+}
+
+.login {
+	text-align: center;
+}
+.login h3 {
+	color : blue;
+	font-size : 28px;
+	padding : 20px 20px 20px 20px;
+}
+.login-form{
+	background:#fff;
+	display:inline-block;
+}
+
+.field label{
+	display:inline-block;
+	padding : 10px 20px 5px 0px;
+}
+
+
+.field .login-error{
+	display:block;
+}
