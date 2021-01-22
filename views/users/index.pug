@@ -1,16 +1,17 @@
 doctype html
 html
-    head
-        include ../partials/head.pug
-    body
-        include ../partials/nav.pug
+	head
+		include ../partials/head.pug
+	body
+		include ../partials/nav.pug
 
-        div
-            h3 Users
+		div.content
+			h3 Users
 
-            ul
-                if (users == null || users.length == 0)
-                    li There is no user yet.
-                each user in users
-                    li
-                        a(href="/users/"+user.username)= user.username
+			ul
+				if (users == null || users.length == 0)
+					li There is no user yet.
+				each user in users
+					li
+						a(href="/users/"+user.username)= user.username
+		include ../partials/aside.pug

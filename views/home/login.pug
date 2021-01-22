@@ -3,26 +3,28 @@ html
 	head
 		include ../partials/head.pug
 	body
-		include ../partials/nav.pug
+		div.wrap
+			include ../partials/nav.pug
+			div.content
+				div.login
+					h3 Login
+					form.login-form(action="/login", method="post")
+						div.field
+							label(for="username") Username
+							input#username(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
+							if errors.username
+								p.login-error= errors.username
+						div.field
+							label(for="password") Password
+							input#password(class=(errors.password)?"is-valid":"", type="text", name="password", value="")
+							if errors.password
+								p.login-error= errors.password
 
-		div.login
-			h3 Login
-			form.login-form(action="/login", method="post")
-				div.field
-					label(for="username") Username
-					input#username(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
-					if errors.username
-						p.login-error= errors.username
-				div.field
-					label(for="password") Password
-					input#password(class=(errors.password)?"is-valid":"", type="text", name="password", value="")
-					if errors.password
-						p.login-error= errors.password
-                
-				div.login-error2
-					if errors.login
-						p= errors.login
-                
-				div.naver-login
-					input(type="submit", value="Submit")
-					a(href="/login/naver") 네이버로 로그인
+						div.login-error2
+							if errors.login
+								p= errors.login
+
+						div.naver-login
+							input(type="submit", value="Submit")
+							a(href="/login/naver") 네이버로 로그인
+			include ../partials/aside.pug

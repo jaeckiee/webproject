@@ -4,46 +4,47 @@ html
 		include ../partials/head.pug
 	body
 		include ../partials/nav.pug
-		
-		div#singUp
-			if error
-				h3= error
-			
-			h3 New User
-			
-			form#singUp-form(action="/users", method="post")
-				div#field
-					label(for="username") Username*
-					input#username(class=(errors.username)?"is-invalid":"", type="text", name="username", value="")
-					if errors.username
-						span#singUp-error= errors.username.message
-				div#field
-					label(for="name") Name*
-					input#name(class=(errors.name)?"is-invalid":"", type="text", name="name", value="")
-					if errors.name
-						span#singUp-error= errors.name.message
-				div#field
-					label(for="email") Email
-					input#email(class=(errors.email)?"is-invalid":"", type="text", name="email", value="")
-					if errors.email
-						span#singUp-error= errors.email.message
-				div#field
-					label(for="password") Password*
-					input#password(class=(errors.password)?"is-invalid":"", type="password", name="password", value="")
-					if errors.password
-						span#singUp-error= errors.password.message
-				div#field
-					label(for="passwordConfirmation") Password Confirmation*
-					input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
-					if errors.passwordConfirmination
-						span#singUp-error= errors.passwordConfirmination.message
-				
-				if errors.unhandled
-					div= errors.unhandled
+		div.content
+			div#singUp
+				if error
+					h3= error
 
-				div#required
-					p
-						small *Required
+				h3 New User
 
-				div#submit
-					button(type="submit") Submit
+				form#singUp-form(action="/users", method="post")
+					div#field
+						label(for="username") Username*
+						input#username(class=(errors.username)?"is-invalid":"", type="text", name="username", value="")
+						if errors.username
+							span#singUp-error= errors.username.message
+					div#field
+						label(for="name") Name*
+						input#name(class=(errors.name)?"is-invalid":"", type="text", name="name", value="")
+						if errors.name
+							span#singUp-error= errors.name.message
+					div#field
+						label(for="email") Email
+						input#email(class=(errors.email)?"is-invalid":"", type="text", name="email", value="")
+						if errors.email
+							span#singUp-error= errors.email.message
+					div#field
+						label(for="password") Password*
+						input#password(class=(errors.password)?"is-invalid":"", type="password", name="password", value="")
+						if errors.password
+							span#singUp-error= errors.password.message
+					div#field
+						label(for="passwordConfirmation") Password Confirmation*
+						input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
+						if errors.passwordConfirmination
+							span#singUp-error= errors.passwordConfirmination.message
+
+					if errors.unhandled
+						div= errors.unhandled
+
+					div#required
+						p
+							small *Required
+
+					div#submit
+						button(type="submit") Submit
+		include ../partials/aside.pug

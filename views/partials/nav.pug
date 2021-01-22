@@ -1,24 +1,17 @@
-nav
-	div#header
-		button(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
-			span
-		div
-			form(action="/posts/search" method="get")
-				div
-					input(type="search" id="search" name="search" placeholder="검색어 입력")
-				div
-					button(type="submit") Search
-		div#header-nav1
-				a#logo(href="/") 8커위키
-				a(href="/") Home
-				a(href="/about") About
-				a(href="/posts") Board
-		div#header-nav2
 
-			if isAuthenticated
-				a(href=`/users/${currentUser.username}`) My Account
-				a(href="/logout") Logout
-			else
-				a(href="/users/new") Sign Up
-				a(href="/login") Login
-			a(href="/users") Users
+div#header
+	div#header-nav1
+			a#logo(href="/") 8커위키
+			a(href="/") Home
+			a(href="/about") About
+			a(href="/posts") Board
+			form(action="/posts/search" method="get")
+				input.input-search(type="search" id="search" name="search" placeholder="검색어 입력")
+	div#header-nav2
+		if isAuthenticated
+			a(href=`/users/${currentUser.username}`) My Account
+			a(href="/logout") Logout
+		else
+			a(href="/users/new") Sign Up
+			a(href="/login") Login
+		a(href="/users") Users

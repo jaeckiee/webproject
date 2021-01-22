@@ -10,6 +10,7 @@ import passport from "./config/passport.js";
 import methodOverride from "method-override";
 import homeRouter from "./routes/home.js";
 import postRouter from "./routes/posts.js";
+import Post from "./models/Post.js";
 import userRouter from "./routes/users.js";
 import commentRouter from "./routes/comments.js";
 import util from "./util.js";
@@ -52,7 +53,17 @@ app.use((req,res,next) => {
 	res.locals.util = util;
 	next();
 });
-
+app.use(function(req, res, next){
+	Post.find({})
+	.limit(10)
+	.sort('-updatedAt')
+	.exec(function(err, asides){
+		if (err) return res.json(err);
+		res.locals.asides=asides;
+		res.locals.datenow=new Date();
+		next();
+	})
+});
 app.use("/",homeRouter);
 app.use("/posts",util.getPostQueryString, postRouter);
 app.use("/users", userRouter);

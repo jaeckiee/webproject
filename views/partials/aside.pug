@@ -1,13 +1,19 @@
-aside
+div.side
 	div
-		h5 최근 변경
 		div
-			ul
-				each post in asides
-					li
-						a(href="/posts/"+post._id)
-							=post.title
+			table.tabletype
+				thead
+					tr
+						th 최근 수정 내역
+				tbody
+					each post in asides
+						tr
+							th.row
+								a(href="/posts/"+post._id)
+									=post.title
 							if (post.updatedAt.getFullYear()===datenow.getFullYear() && post.updatedAt.getMonth()===datenow.getMonth() && post.updatedAt.getDate()===datenow.getDate())
-								span(data-date-time=post.createdAt)
+								th.row
+									span(data-date-time=post.createdAt)
 							else
-								span(data-date=post.createdAt)
+								th.row
+									span(data-date=post.createdAt)

@@ -1,32 +1,31 @@
 doctype html
 html
-    head
-        include ../partials/head.pug
-    body
-        include ../partials/nav.pug
-        include ../partials/aside.pug
-        div#board
-            table
-                thead
-                    tr
-                        th#post-title(scope="col") Title
-                        th(scope="col") Author
-                        th#post-date(scope="col") Date
-                tbody
-                    p #{posts.updatedAt}
-                    if (posts == null || posts.length == 0)
-                        tr
-                            td(colspan=2) There is no data to show :(
-                    each post in posts
-                        tr
-                            td
-                                a(href="/posts/"+post._id)
-                                    div= post.title
-                            td.author
-                                div= (post.author) ? post.author.username : ""
-                            td.date
-                                span(data-date=post.createdAt)
+	head
+		include ../partials/head.pug
+	body
+		div.wrap
+			include ../partials/nav.pug
+			div.content
+				table.post-index
+					thead
+						tr
+							th.post-title(scope="col") Title
+							th.post-author(scope="col") Author
+							th.post-date(scope="col") Date
+					tbody
+						if (posts == null || posts.length == 0)
+							tr
+								th(colspan=2) There is no data to show :(
+						each post in posts
+							tr
+								th.post-title
+									a(href="/posts/"+post._id)= post.title
+								th.post-author
+									span= (post.author) ? post.author.username : ""
+								th.post-date
+									span(data-date=post.createdAt)
 
-            div
-                if isAuthenticated
-                    a(href="/posts/new") New
+				div
+					if isAuthenticated
+						a(href="/posts/new") 문서 생성
+			include ../partials/aside.pug

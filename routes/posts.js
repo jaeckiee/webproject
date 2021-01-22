@@ -29,6 +29,7 @@ router.use(function(req, res, next){
 });
 
 // Index
+
 router.get('/', function(req, res) {
     Post.find({})
     .populate('author')	// relationship 항목의 값을 생성시켜줌
@@ -38,6 +39,7 @@ router.get('/', function(req, res) {
         res.render('posts/index', { posts: posts });
     });
 });
+
 
 // New
 router.get('/new', util.isLoggedin, function(req, res) {
@@ -51,7 +53,7 @@ router.get('/search', function(req, res){
     Post.find({title: { $regex: new RegExp(req.query.search, 'i') }})
     .exec(function(err, posts) {
         if (err) return res.json(err);
-        res.render('posts/index', { posts: posts });
+        res.render('posts/search', { posts: posts });
     });
 });
 

@@ -1,11 +1,12 @@
 doctype html
 html
-    head
-        include ../partials/head.pug
-    body
-        include ../partials/nav.pug
-
-        div
-            h2 About
-            p 이 사이트는 MEAN블로그 보고 만들었어용
-            | PUG로 변환했음
+	head
+		include ../partials/head.pug
+	body
+		div.wrap
+			include ../partials/nav.pug
+			div.content
+				h2 About
+				p 이 사이트는 MEAN블로그 보고 만들었어용
+				| PUG로 변환했음
+			include ../partials/aside.pug

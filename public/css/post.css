@@ -1,0 +1,41 @@
+table.tabletype {
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+}
+table.tabletype thead {
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background: #fcf1f4;
+}
+table.tabletype thead th {
+  padding: 7px;
+  font-weight: bold;
+  vertical-align: top;
+	font-size : 15px;
+}
+table.tabletype tbody th {
+  width: 100px;
+  padding: 10px;
+  font-weight: bold;
+	font-size : 15px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+  background: #fcf1f4;
+}
+
+table.post-index {
+	display:inline-block;
+	border-collapse: collapse;
+	text-align: left;
+}
+table.post-index.post-title {
+	width : 100px;
+}
+table.post-index.post-author {
+	width : 100px;
+}
+table.post-index.post-date {
+	width : 100px;
+}
