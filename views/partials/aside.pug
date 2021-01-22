@@ -13,7 +13,7 @@ div.side
 									=post.title
 							if (post.updatedAt.getFullYear()===datenow.getFullYear() && post.updatedAt.getMonth()===datenow.getMonth() && post.updatedAt.getDate()===datenow.getDate())
 								th.row
-									span(data-date-time=post.createdAt)
+									span(data-date-time=post.updatedAt)
 							else
 								th.row
-									span(data-date=post.createdAt)
+									span(data-date=post.updatedAt)
