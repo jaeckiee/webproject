@@ -4,14 +4,16 @@ html
         include ../partials/head.pug
     body
         include ../partials/nav.pug
-
+        include ../partials/aside.pug
         div#board
             table
                 thead
                     tr
                         th#post-title(scope="col") Title
+                        th(scope="col") Author
                         th#post-date(scope="col") Date
                 tbody
+                    p #{posts.updatedAt}
                     if (posts == null || posts.length == 0)
                         tr
                             td(colspan=2) There is no data to show :(
@@ -20,8 +22,11 @@ html
                             td
                                 a(href="/posts/"+post._id)
                                     div= post.title
-                            td
+                            td.author
+                                div= (post.author) ? post.author.username : ""
+                            td.date
                                 span(data-date=post.createdAt)
 
-        div
-            a(href="/posts/new") New
+            div
+                if isAuthenticated
+                    a(href="/posts/new") New

@@ -21,6 +21,7 @@ html
             
             div
                 a(href="/users") Back
-                a(href="/users/"+user.username+"/edit") Edit
-                form(action="/users/"+user.username+"?_method=delete", method="post")
-                    button(type="submit") Delete
+                if (isAuthenticated && currentUser.id == user.id)
+                    a(href="/users/"+user.username+"/edit") Edit
+                    form(action="/users/"+user.username+"?_method=delete", method="post")
+                        button(type="submit") Delete

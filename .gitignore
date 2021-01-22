@@ -22,3 +22,5 @@ dist
 .tern-port
 
 node_modules/
+
+uploadedFiles/

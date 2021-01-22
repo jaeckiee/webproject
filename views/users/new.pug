@@ -37,7 +37,7 @@ html
 					input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
 					if errors.passwordConfirmination
 						span#singUp-error= errors.passwordConfirmination.message
-
+				
 				if errors.unhandled
 					div= errors.unhandled
 
