@@ -1,24 +1,15 @@
 nav
-	div
-		button(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
-			span
-		div#navbarSupportedContent
-			ul
-				li
-					a(href="/") Home
-					a(href="/about") About
-					a(href="/posts") Board
-			ul
-				if isAuthnticated
-					li
-						p= currentUser
-						a(href=`/users/${currentUser.username}`) My Account
-					li
-						a(href="/logout") Logout
-				else
-					li
-						a(href="/users/new") Sign Up
-					li
-						a(href="/login") Login
-				li
-					a(href="/users") Users
+	div#header
+		div#header-nav1
+				a#logo(href="/") 8커위키
+				a(href="/") Home
+				a(href="/about") About
+				a(href="/posts") Board
+		div#header-nav2
+			if isAuthnticated
+				a(href=`/users/${currentUser.username}`) My Account
+				a(href="/logout") Logout
+			else
+				a(href="/users/new") Sign Up
+				a(href="/login") Login
+			a(href="/users") Users

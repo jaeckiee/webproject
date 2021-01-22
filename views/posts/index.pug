@@ -5,13 +5,12 @@ html
     body
         include ../partials/nav.pug
 
-        div
-            h2 Board
+        div#board
             table
                 thead
                     tr
-                        th(scope="col") Title
-                        th(scope="col") Date
+                        th#post-title(scope="col") Title
+                        th#post-date(scope="col") Date
                 tbody
                     if (posts == null || posts.length == 0)
                         tr
@@ -24,5 +23,5 @@ html
                             td
                                 span(data-date=post.createdAt)
 
-            div
-                a(href="/posts/new") New
+        div
+            a(href="/posts/new") New
