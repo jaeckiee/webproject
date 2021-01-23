@@ -11,9 +11,11 @@ div.side
 							th.row
 								a(href="/posts/"+post._id)
 									=post.title
-							if (post.updatedAt.getFullYear()===datenow.getFullYear() && post.updatedAt.getMonth()===datenow.getMonth() && post.updatedAt.getDate()===datenow.getDate())
+							-var seoulnow = moment(datenow.getTime()).tz('Asia/Seoul')
+							-var seoulpostupdatedAt = moment(post.updatedAt.getTime()).tz('Asia/Seoul')
+							if (seoulnow.format('YYYY-MM-DD') === seoulpostupdatedAt.format('YYYY-MM-DD'))
 								th.row
-									span(data-date-time=post.updatedAt)
+									span= seoulpostupdatedAt.format('HH:mm')
 							else
 								th.row
-									span(data-date=post.updatedAt)
+									span= seoulpostupdatedAt.format('YYYY-MM-DD')

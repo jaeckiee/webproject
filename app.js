@@ -14,7 +14,7 @@ import Post from "./models/Post.js";
 import userRouter from "./routes/users.js";
 import commentRouter from "./routes/comments.js";
 import util from "./util.js";
-
+import moment from "moment-timezone";
 const app = express();
 const PORT = 3000;
 
@@ -61,6 +61,7 @@ app.use(function(req, res, next){
 		if (err) return res.json(err);
 		res.locals.asides=asides;
 		res.locals.datenow=new Date();
+		res.locals.moment=moment;
 		next();
 	})
 });

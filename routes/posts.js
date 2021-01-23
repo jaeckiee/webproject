@@ -15,21 +15,7 @@ import File from "../models/File.js";
 import Comment from "../models/Comment.js";
 import util from "../util.js";
 
-// Aside
-router.use(function(req, res, next){
-	Post.find({})
-	.limit(10)
-	.sort('-updatedAt')
-	.exec(function(err, asides){
-		if (err) return res.json(err);
-		res.locals.asides=asides;
-		res.locals.datenow=new Date();
-		next();
-	})
-});
-
 // Index
-
 router.get('/', function(req, res) {
     Post.find({})
     .populate('author')	// relationship 항목의 값을 생성시켜줌
