@@ -16,7 +16,7 @@ html
 								p.login-error= errors.username
 						div.field
 							label(for="password") Password
-							input#password(class=(errors.password)?"is-valid":"", type="text", name="password", value="")
+							input#password(class=(errors.password)?"is-valid":"", type="password", name="password", value="")
 							if errors.password
 								p.login-error= errors.password
 

@@ -37,8 +37,8 @@ app.listen(PORT, (req,res) => console.log(`server start`));
 app.set("view engine", "pug");
 app.use(express.static(__dirname+'/public'));
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended : true}));
+app.use(bodyParser.json({ limit: "100mb" }));	// PayloadTooLargeError 해결
+app.use(bodyParser.urlencoded({ extended: true, limit: "100mb", extended: false }));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(methodOverride('_method'));
