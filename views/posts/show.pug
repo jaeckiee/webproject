@@ -2,19 +2,20 @@ doctype html
 html
 	head
 		include ../partials/head.pug
+		script(src="/js/postEditor/showPost.js")
 	body
 		div.wrap
 			include ../partials/nav.pug
 			div.content
-				h5= post.title
+				h2= post.title
 				div
 					div
-						if post.attachment
+						// if post.attachment
 							div
 								small= "📁 Attachment: "+post.attachment.originalFileName+" ("+util.bytesToSize(post.attachment.size)+")"
 							div
 								img(src="../uploadedFiles/"+post.attachment.originalFileName)
-						div= post.body
+						#body(display="hidden")= post.body
 					div
 						div
 							div

@@ -1,3 +1,32 @@
+/* post 에서 임의로 수정함. by 조용기 */
+.buttons {}
+
+#body {
+  display: none;
+  background: white;
+}
+
+#editor {
+  background: white;
+  border: 1px solid;
+}
+
+#bold {
+  font-weight: bold;
+}
+
+#italic {
+  font-style: italic;
+}
+
+#undeline {
+  text-decoration: underline;
+}
+
+#strikeThrough {
+  text-decoration: line-through;
+}
+
 table.tabletype {
   border-collapse: collapse;
   text-align: left;

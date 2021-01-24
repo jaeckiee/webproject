@@ -2,6 +2,7 @@ doctype html
 html
 	head
 		include ../partials/head.pug
+		script(src="/js/postEditor/editPost.js")
 	body
 		div.wrap
 			include ../partials/nav.pug
@@ -14,24 +15,6 @@ html
 							li
 								a(href="/posts") Board
 							li New Post
-
-					form(action="/posts", enctype="multipart/form-data", method="post")
-						div
-							label(for="title") Title
-							input#title(class=(errors.title)?"is-invalid":"", type="text", name="title", value="")
-							if (errors.title)
-								span= errors.title.message
-						div
-							label(for="attachment") Attachment
-							input#attachment(type="file", name="attachment")
-						div
-							label(for="body") Body
-							textarea#body(class=(errors.body)?"is-invalid":"", name="body", rows="5")
-							if (errors.body)
-								span= errors.body.message
-						if errors.unhandled
-							div= errors.unhandled
-						div
-							a(href="/posts") Back
-							button(type="submit") Submit
+					// edit.pug 랑 폼이 비슷한데 효과 편집기 일일이 넣기 귀찮아서 따로 뺐습니다
+					include ../partials/postForm.pug
 			include ../partials/aside.pug

@@ -1,0 +1,51 @@
+// , enctype="multipart/form-data" 잠시 뺌
+form#Post(action=(post)?"/posts/"+post._id+"?_method=put":"/posts", method="post", name="newPost")
+	div
+		label(for="title") Title
+		input#title(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(post)?post.title:"")
+		if (errors.title)
+			span= errors.title.message
+	// div
+		label(for="attachment") Attachment
+		input#attachment(type="file", name="attachment")
+	div
+		label(for="body") Body
+		textarea#body(name="body", hidden)= (post)?post.body:""
+		.buttons
+			input#undo(type="button", value="UNDO")
+			input#redo(type="button", value="REDO")
+			input#removeFormat(type="button", value="효과 지우기")
+			select#heading
+				option(selected) heading
+				option(value="p") P
+				option(value="h1") H1
+				option(value="h2") H2
+				option(value="h3") H3
+				option(value="h4") H4
+				option(value="h5") H5
+				option(value="h6") H6
+			input#bold(type="button", value=" B ")
+			input#italic(type="button", value="Italic")
+			input#underline(type="button", value="abc")
+			input#strikeThrough(type="button", value="abc")
+			input#olist(type="button", value="글번호")
+			input#ulist(type="button", value="글머리")
+			input#justifyLeft(type="button", value="왼쪽 정렬")
+			input#justifyCenter(type="button", value="가운데 정렬")
+			input#justifyRight(type="button", value="오른쪽 정렬")
+			input#indent(type="button", value="들여쓰기")
+			input#outdent(type="button", value="내어쓰기")
+			input#horizon(type="button", value="가로줄")
+			input#hyperlink(type="button", value="하이퍼링크")
+			input#insertImage(type="file", name="파일", accept="image/*", multiple)
+		div
+			#editor(class=(errors.body)?"is-invalid":"", contenteditable="true")
+		input#htmlView(type="checkbox", name="htmlView")
+		label(for="htmlView")  HTML 보기
+		if (errors.body)
+			span= errors.body.message
+	if errors.unhandled
+		div= errors.unhandled
+	div
+		a(href="/posts") Back
+		button(type="submit") Submit

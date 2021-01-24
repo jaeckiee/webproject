@@ -2,6 +2,7 @@ doctype html
 html
 	head
 		include ../partials/head.pug
+		script(src="/js/postEditor/editPost.js")
 	body
 		div.wrap
 			include ../partials/nav.pug
@@ -16,21 +17,5 @@ html
 							li
 								a(href="/posts/"+post._id)= post.title
 							li Edit Post
-
-					form(action="/posts/"+post._id+"?_method=put", method="post")
-						div
-							label(for="title") Title
-							input#title(class=(errors.title)?"is-invalid":"", type="text", name="title", value=post.title)
-							if errors.title
-								span= errors.title.message
-						div
-							label(for="body") Body
-							textarea#body(class=(errors.title)?"is-invalid":"", name="body", rows="5")= post.body
-							if errors.body
-								span= errors.body.message
-						if errors.unhandled
-							div= errors.unhandled
-						div
-							a(href="/posts/"+post._id) Back
-							button(type="submit") Submit
+					include ../partials/postForm.pug
 			include ../partials/aside.pug
