@@ -36,7 +36,7 @@ router.get('/search', function(req, res){
     });
 });
 
-// New util.isLoggedin 잠시 뺐음
+// New
 router.get('/new', util.isLoggedin, function(req, res) {
     var post = req.flash('post')[0] || {};
     var errors = req.flash('errors')[0] || {};
@@ -49,7 +49,6 @@ router.post('/', util.isLoggedin, async function(req, res) {
 	// req.body.attachment = attachment;
     req.body.author = req.user._id;
     Post.create(req.body, function(err, post) {
-		// console.log(err);
         if (err) {
             req.flash('post', req.body);
             req.flash('errors', util.parseError(err));
