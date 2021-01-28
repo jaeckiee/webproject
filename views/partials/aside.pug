@@ -1,21 +1,18 @@
-div.side
-	div
-		div
-			table.tabletype
-				thead
-					tr
-						th 최근 수정 내역
-				tbody
-					each post in asides
-						tr
-							th.row
-								a(href="/posts/"+post._id)
-									=post.title
-							-var seoulnow = moment(datenow.getTime()).tz('Asia/Seoul')
-							-var seoulpostupdatedAt = moment(post.updatedAt.getTime()).tz('Asia/Seoul')
-							if (seoulnow.format('YYYY-MM-DD') === seoulpostupdatedAt.format('YYYY-MM-DD'))
-								th.row
-									span= seoulpostupdatedAt.format('HH:mm')
-							else
-								th.row
-									span= seoulpostupdatedAt.format('YYYY-MM-DD')
+table.table.table-hover
+	thead
+		tr
+			th 최근 수정 내역
+	tbody
+		each post in asides
+			tr
+				th.row
+					a(href="/posts/"+post._id)
+						=post.title
+				-var seoulnow = moment(datenow.getTime()).tz('Asia/Seoul')
+				-var seoulpostupdatedAt = moment(post.updatedAt.getTime()).tz('Asia/Seoul')
+				if (seoulnow.format('YYYY-MM-DD') === seoulpostupdatedAt.format('YYYY-MM-DD'))
+					th.row
+						span= seoulpostupdatedAt.format('HH:mm')
+				else
+					th.row
+						span= seoulpostupdatedAt.format('YYYY-MM-DD')

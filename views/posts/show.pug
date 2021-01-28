@@ -16,7 +16,8 @@ html
 							div
 								img(src="../uploadedFiles/"+post.attachment.originalFileName)
 						#body(display="hidden")= post.body
-					div
+					
+					//div
 						div
 							div
 								span Author : 
@@ -28,18 +29,18 @@ html
 								div
 									span Updated : 
 									span(data-date-time=post.updatedAt)
-
-				div
-					a(href="/posts") Back
+					
+				div.post-button
+					//a(href="/posts") Back
 					if (isAuthenticated && post.author && currentUser.id == post.author.id)
 						a(href="/posts/"+post._id+"/edit") Edit
 						form(action="/posts/"+post._id+"?_method=delete", method="post")
 							button(type="submit") Delete
 				div Comments
-				if comments.length
-					each comment in comments
-						p #{comment.author.username}
-						p #{comment.text}
+					if comments.length
+						each comment in comments
+							p #{comment.author.username}
+							p #{comment.text}
 				div
 					form(action='/comments?postId='+post._id+getPostQueryString(true), method='post')
 						fieldset("!isAuthenticated?'disabled':''")

@@ -2,29 +2,39 @@ doctype html
 html
 	head
 		include ../partials/head.pug
-	body
-		div.wrap
-			include ../partials/nav.pug
-			div.content
-				div.login
-					h3 Login
-					form.login-form(action="/login", method="post")
-						div.field
+	body.bg-info
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3
+					form(action="/login", method="post")
+						h3 Login
+						div
 							label(for="username") Username
-							input#username(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
+							input.form-control(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
 							if errors.username
-								p.login-error= errors.username
-						div.field
+								div.alert.alert-danger(role="alert")
+									span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+									span.sr-only Error:
+									= errors.username
+						div
 							label(for="password") Password
-							input#password(class=(errors.password)?"is-valid":"", type="password", name="password", value="")
+							input.form-control(class=(errors.password)?"is-valid":"", type="password", name="password", value="")
 							if errors.password
-								p.login-error= errors.password
+								div.alert.alert-danger(role="alert")
+									span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+									span.sr-only Error:
+									= errors.password
 
-						div.login-error2
+						div
 							if errors.login
-								p= errors.login
+								div.alert.alert-danger(role="alert")
+									span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+									span.sr-only Error:
+									= errors.login
 
-						div.naver-login
-							input(type="submit", value="Submit")
-							a(href="/login/naver") 네이버로 로그인
-			include ../partials/aside.pug
+						div
+							button.btn.btn-primary(type="submit") 로그인
+							a.btn.btn-success(href="/login/naver") 네이버로 로그인
+				div.col-md-3
+					include ../partials/aside.pug

@@ -2,28 +2,26 @@ doctype html
 html
 	head
 		include ../partials/head.pug
-	body
-		div.wrap
-			include ../partials/nav.pug
-			div.content
-				div
-					h3= user.username
-
-					form(action="/users", method="post")
-						fieldset(disabled)
-							div
-								label(for="name") Name
+	body.bg-info
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3
+					div.content
+						h1= user.username
+						form(action="/users", method="post")
+							fieldset(disabled)
 								div
-									input#name(type="text", name="name", value=user.username)
-							div
-								label(for="email") Email
+									label(for="name") Name
+									input.form-control(type="text", name="name", value=user.username)
 								div
-									input#email(type="text", name="email", value=user.email)
+									label(for="email") Email
+									input.form-control(type="text", name="email", value=user.email)
 
-					div
-						a(href="/users") Back
-						if (isAuthenticated && currentUser.id == user.id)
-							a(href="/users/"+user.username+"/edit") Edit
-							form(action="/users/"+user.username+"?_method=delete", method="post")
-								button(type="submit") Delete
-			include ../partials/aside.pug
+							a.btn.btn-primary(href="/users") Back
+							if (isAuthenticated && currentUser.id == user.id)
+								a.btn.btn-success(href="/users/"+user.username+"/edit") Edit
+								form(action="/users/"+user.username+"?_method=delete", method="post")
+									button.btn.btn-danger(type="submit") Delete
+				div.col-md-3
+					include ../partials/aside.pug

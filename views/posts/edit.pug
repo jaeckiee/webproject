@@ -3,19 +3,13 @@ html
 	head
 		include ../partials/head.pug
 		script(src="/js/postEditor/editPost.js")
-	body
-		div.wrap
-			include ../partials/nav.pug
-			div.content
-				div
-					nav
-						ol
-							li
-								a(href="/") Home
-							li
-								a(href="/posts") Board
-							li
-								a(href="/posts/"+post._id)= post.title
-							li Edit Post
-					include ../partials/postForm.pug
-			include ../partials/aside.pug
+	body.bg-info
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3.bg-danger
+					div
+						// edit.pug 랑 폼이 비슷한데 효과 편집기 일일이 넣기 귀찮아서 따로 뺐습니다
+						include ../partials/postForm.pug
+				div.col-md-3.bg-danger
+					include ../partials/aside.pug

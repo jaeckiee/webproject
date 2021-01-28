@@ -5,27 +5,28 @@ html
 	body
 		div.wrap
 			include ../partials/nav.pug
-			div.content
-				table.post-index
-					thead
-						tr
-							th.post-title(scope="col") Title
-							th.post-author(scope="col") Author
-							th.post-date(scope="col") Date
-					tbody
-						if (posts == null || posts.length == 0)
+			div.container-fluid
+				div.row
+					table.post-index
+						thead
 							tr
-								th(colspan=2) There is no data to show :(
-						each post in posts
-							tr
-								th.post-title
-									a(href="/posts/"+post._id)= post.title
-								th.post-author
-									span= (post.author) ? post.author.username : ""
-								th.post-date
-									span(data-date=post.createdAt)
+								th.post-title(scope="col") Title
+								th.post-author(scope="col") Author
+								th.post-date(scope="col") Date
+						tbody
+							if (posts == null || posts.length == 0)
+								tr
+									th(colspan=2) There is no data to show :(
+							each post in posts
+								tr
+									th.post-title
+										a(href="/posts/"+post._id)= post.title
+									th.post-author
+										span= (post.author) ? post.author.username : ""
+									th.post-date
+										span(data-date=post.createdAt)
 
-				div
+				div.row
 					if isAuthenticated
 						a(href="/posts/new") 문서 생성
 			include ../partials/aside.pug

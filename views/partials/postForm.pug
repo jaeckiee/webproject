@@ -1,8 +1,8 @@
 // , enctype="multipart/form-data" 잠시 뺌
 form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=put":"/posts", method="post", name="newPost")
 	div
-		label(for="title") Title
-		input#title(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(post)?post.title:"")
+		h1(for="title") Title
+		input#title.form-control(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(post)?post.title:"")
 		if (errors.title)
 			span= errors.title.message
 	// div
@@ -24,22 +24,30 @@ form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=p
 				option(value="h4") H4
 				option(value="h5") H5
 				option(value="h6") H6
-			input#bold(type="button", value=" B ")
-			input#italic(type="button", value="Italic")
-			input#underline(type="button", value="abc")
-			input#strikeThrough(type="button", value="abc")
+			button#bold(type="button")
+				span.glyphicon.glyphicon-bold
+			button#italic(type="button")
+				span.glyphicon.glyphicon-italic
+			button#underline(type="button")
+				span 밑줄
+			input#strikeThrough(type="button", value="강조")
 			input#olist(type="button", value="글번호")
 			input#ulist(type="button", value="글머리")
-			input#justifyLeft(type="button", value="왼쪽 정렬")
-			input#justifyCenter(type="button", value="가운데 정렬")
-			input#justifyRight(type="button", value="오른쪽 정렬")
-			input#indent(type="button", value="들여쓰기")
-			input#outdent(type="button", value="내어쓰기")
+			button#justifyLeft(type="button")
+				span.glyphicon.glyphicon-align-left
+			button#justifyCenter(type="button")
+				span.glyphicon.glyphicon-align-center
+			button#justifyRight(type="button")
+				span.glyphicon.glyphicon-align-right
+			button#indent(type="button")
+				span.glyphicon.glyphicon-indent-left
+			button#outdent(type="button")
+				span.glyphicon.glyphicon-indent-right
 			input#horizon(type="button", value="가로줄")
 			input#hyperlink(type="button", value="하이퍼링크")
 			input#insertImage(type="file", name="파일", accept="image/*", multiple)
 		div
-			#editor(class=(errors.body)?"is-invalid":"", contenteditable="true")
+			#editor.bg-primary(class=(errors.body)?"is-invalid":"", contenteditable="true")
 		input#htmlView(type="checkbox", name="htmlView")
 		label(for="htmlView")  HTML 보기
 		if (errors.body)
@@ -47,5 +55,5 @@ form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=p
 	if errors.unhandled
 		div= errors.unhandled
 	div
-		a(href="/posts") Back
-		button(type="submit") Submit
+		a.btn.btn-primary(href="/posts") Back
+		button.btn.btn-primary(type="submit") Submit

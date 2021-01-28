@@ -2,22 +2,18 @@ doctype html
 html
 	head
 		include ../partials/head.pug
-	body
-		div.wrap
-			include ../partials/nav.pug
-			div.content
-				div
-					if isAuthenticated
-						a.new-document(href="/posts/new") 문서 생성
-				div#board
-					table
+	body.bg-info
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3.bg-danger
+					table.table.table-hover
 						thead
 							tr
-								th#post-title(scope="col") Title
+								th(scope="col") Title
 								th(scope="col") Author
-								th#post-date(scope="col") Date
+								th(scope="col") Date
 						tbody
-							p #{posts.updatedAt}
 							if (posts == null || posts.length == 0)
 								tr
 									td(colspan=2) There is no data to show :(
@@ -30,5 +26,7 @@ html
 										div= (post.author) ? post.author.username : ""
 									td.date
 										span(data-date=post.createdAt)
-
-			include ../partials/aside.pug
+					if isAuthenticated
+						a.btn.btn-primary.btn-sm(href="/posts/new") 새 문서 생성
+				div.col-md-3.bg-danger
+					include ../partials/aside.pug

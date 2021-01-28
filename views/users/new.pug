@@ -2,49 +2,72 @@ doctype html
 html
 	head
 		include ../partials/head.pug
-	body
-		include ../partials/nav.pug
-		div.content
-			div#singUp
-				if error
-					h3= error
+	body.bg-info
+		
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3
+					div
+						if error
+							div.alert.alert-danger(role="alert")
+								span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+								span.sr-only Error:
+								= error
 
-				h3 New User
+						h3 New User
 
-				form#singUp-form(action="/users", method="post")
-					div#field
-						label(for="username") Username*
-						input#username(class=(errors.username)?"is-invalid":"", type="text", name="username", value="")
-						if errors.username
-							span#singUp-error= errors.username.message
-					div#field
-						label(for="name") Name*
-						input#name(class=(errors.name)?"is-invalid":"", type="text", name="name", value="")
-						if errors.name
-							span#singUp-error= errors.name.message
-					div#field
-						label(for="email") Email
-						input#email(class=(errors.email)?"is-invalid":"", type="text", name="email", value="")
-						if errors.email
-							span#singUp-error= errors.email.message
-					div#field
-						label(for="password") Password*
-						input#password(class=(errors.password)?"is-invalid":"", type="password", name="password", value="")
-						if errors.password
-							span#singUp-error= errors.password.message
-					div#field
-						label(for="passwordConfirmation") Password Confirmation*
-						input#passwordConfirmation(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
-						if errors.passwordConfirmination
-							span#singUp-error= errors.passwordConfirmination.message
+						form(action="/users", method="post")
+							div
+								label(for="username") Username*
+								input.form-control(class=(errors.username)?"is-invalid":"", type="text", name="username", value="")
+								if errors.username
+									div.alert.alert-danger(role="alert")
+										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+										span.sr-only Error:
+										= errors.username.message
+							div
+								label(for="name") Name*
+								input.form-control(class=(errors.name)?"is-invalid":"", type="text", name="name", value="")
+								if errors.name
+									div.alert.alert-danger(role="alert")
+										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+										span.sr-only Error:
+										= errors.name.message
+							div
+								label(for="email") Email
+								input.form-control(class=(errors.email)?"is-invalid":"", type="text", name="email", value="")
+								if errors.email
+									div.alert.alert-danger(role="alert")
+										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+										span.sr-only Error:
+										= errors.email.message
+							div
+								label(for="password") Password*
+								input.form-control(class=(errors.password)?"is-invalid":"", type="password", name="password", value="")
+								if errors.password
+									div.alert.alert-danger(role="alert")
+										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+										span.sr-only Error:
+										= errors.password.message
+							div
+								label(for="passwordConfirmation") Password Confirmation*
+								input.form-control(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
+								if errors.passwordConfirmination
+									div.alert.alert-danger(role="alert")
+										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+										span.sr-only Error:
+										= errors.passwordConfirmination.message
 
-					if errors.unhandled
-						div= errors.unhandled
-
-					div#required
-						p
-							small *Required
-
-					div#submit
-						button(type="submit") Submit
-		include ../partials/aside.pug
+							if errors.unhandled
+								div.alert.alert-danger(role="alert")
+									span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
+									span.sr-only Error:
+									= errors.unhandled
+							div
+								p
+									small *Required
+							div
+								button.btn.btn-primary(type="submit") Submit
+				div.col-md-3
+					include ../partials/aside.pug
