@@ -30,6 +30,7 @@ router.get('/', function(req, res) {
 // Search
 router.get('/search', function(req, res){
     Post.find({title: { $regex: new RegExp(req.query.search, 'i') }})
+	.populate('author')
     .exec(function(err, posts) {
         if (err) return res.json(err);
         res.render('posts/search', { posts: posts });

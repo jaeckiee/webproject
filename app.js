@@ -63,7 +63,7 @@ app.use(function(req, res, next){
 		res.locals.datenow=new Date();
 		res.locals.moment=moment;
 		next();
-	})
+	});
 });
 app.use("/",homeRouter);
 app.use("/posts",util.getPostQueryString, postRouter);
