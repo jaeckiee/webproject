@@ -18,10 +18,10 @@ html
 									label(for="email") Email
 									input.form-control(type="text", name="email", value=user.email)
 
-						a.btn.btn-primary(href="/users") Back
+						a.btn.btn-primary.custom-btn-padding(href="/users") Back
 						if (isAuthenticated && currentUser.id == user.id)
-							a.btn.btn-success(href="/users/"+user.username+"/edit") Edit
-							form(action="/users/"+user.username+"?_method=delete" method="post")
-								button.btn.btn-danger(type="submit") Delete
+							a.btn.btn-success.custom-btn-padding(href="/users/"+user.username+"/edit") Edit
+							form(action="/users/"+user.username+"?_method=delete" method="post" style = "display:inline-block")
+								button.btn.btn-danger.custom-btn-padding(type="submit") Delete
 				div.col-md-3
 					include ../partials/aside.pug
