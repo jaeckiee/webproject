@@ -12,7 +12,6 @@ import homeRouter from "./routes/home.js";
 import postRouter from "./routes/posts.js";
 import Post from "./models/Post.js";
 import userRouter from "./routes/users.js";
-import commentRouter from "./routes/comments.js";
 import util from "./util.js";
 import moment from "moment-timezone";
 const app = express();
@@ -68,6 +67,5 @@ app.use(function(req, res, next){
 app.use("/",homeRouter);
 app.use("/posts",util.getPostQueryString, postRouter);
 app.use("/users", userRouter);
-app.use("/comments",util.getPostQueryString, commentRouter);
 
 export default app;

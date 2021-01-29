@@ -1,16 +1,16 @@
 import express from "express";
 var router = express.Router();
-// import multer from "multer";	// form에 포함된 파일을 multer로 읽어와야 함.
-// var storage = multer.diskStorage({	// multer가 저장할 때 파일 간 이름 충돌을 방지하기 위해 랜덤한 이름의 바이너리 파일(확장자x)로 저장하는데 일단 원래 형식으로 저장하게끔 바꿈
-// 	destination: function(req, file, cb) {
-// 		cb(null, 'public/uploadedFiles/');
-// 	},
-// 	filename: function(req, file, cb) {
-// 		cb(null, file.originalname);
-// 	}
+// import multer from "multer";   // form에 포함된 파일을 multer로 읽어와야 함.
+// var storage = multer.diskStorage({   // multer가 저장할 때 파일 간 이름 충돌을 방지하기 위해 랜덤한 이름의 바이너리 파일(확장자x)로 저장하는데 일단 원래 형식으로 저장하게끔 바꿈
+//    destination: function(req, file, cb) {
+//       cb(null, 'public/uploadedFiles/');
+//    },
+//    filename: function(req, file, cb) {
+//       cb(null, file.originalname);
+//    }
 // });
 // var upload = multer({ storage: storage });
-// var upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });	// 메모리에 파일을 buffer로 저장하고 업로드 20 MB 제한
+// var upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });   // 메모리에 파일을 buffer로 저장하고 업로드 20 MB 제한
 import Post from "../models/Post.js";
 import File from "../models/File.js";
 import Comment from "../models/Comment.js";
@@ -19,7 +19,7 @@ import util from "../util.js";
 // Index
 router.get('/', function(req, res) {
     Post.find({})
-    .populate('author')	// relationship 항목의 값을 생성시켜줌
+    .populate('author')   // relationship 항목의 값을 생성시켜줌
     .sort('-createdAt')
     .exec(function(err, posts) {
         if (err) return res.json(err);
@@ -30,7 +30,6 @@ router.get('/', function(req, res) {
 // Search
 router.get('/search', function(req, res){
     Post.find({title: { $regex: new RegExp(req.query.search, 'i') }})
-	.populate('author')
     .exec(function(err, posts) {
         if (err) return res.json(err);
         res.render('posts/search', { posts: posts });
@@ -43,11 +42,38 @@ router.get('/new', util.isLoggedin, function(req, res) {
     var errors = req.flash('errors')[0] || {};
     res.render('posts/new', { post: post, errors: errors });
 });
+// comment create
+router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 1
+  var post = res.locals.post; // 1-1
+  req.body.author = req.user._id; // 2
+  req.body.post = req.params.id;// 2
+  console.log(req.params.id);
+  Comment.create(req.body, function(err, post){
+    if(err) return res.json(err);
+    return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
+  });
+});
+// comment index
+router.get('/:id/comment', function(req, res){ 
+  var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
+  Promise.all([
+      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
+      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+    ])
+    .then(([post, comments]) => {
+      res.render('posts/comment', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
+    })
+    .catch((err) => {
+      console.log('err: ', err);
+      return res.json(err);
+    });
+});
 
 // Create upload.single('attachment'), 잠시 뻈음
 router.post('/', util.isLoggedin, async function(req, res) {
-	// var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined;	// form에서 받아들인 file을 토대로 File 인스턴스 생성
-	// req.body.attachment = attachment;
+   // var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined;   // form에서 받아들인 file을 토대로 File 인스턴스 생성
+   // req.body.attachment = attachment;
     req.body.author = req.user._id;
     Post.create(req.body, function(err, post) {
         if (err) {
@@ -55,30 +81,30 @@ router.post('/', util.isLoggedin, async function(req, res) {
             req.flash('errors', util.parseError(err));
             return res.redirect('/posts/new');
         }
-		// if (attachment) {
-		// 	attachment.postId = post._id;
-		// 	attachment.save();
-		// }
+      // if (attachment) {
+      //    attachment.postId = post._id;
+      //    attachment.save();
+      // }
         res.redirect('/posts');
     });
 });
 
 // Show
 router.get('/:id', function(req, res) {
-	var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
-	var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
+   var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+   var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
 
-	Promise.all([
-		Post.findOne({_id: req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment', match: {isDeleted: false}}),
-		Comment.find({post: req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
-	])
-		.then(([post, comments]) => {
-			res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError });
-		})
-		.catch((err) => {
-			console.log('err: ', err);
-			return res.json(err);
-		});
+   Promise.all([
+      Post.findOne({_id: req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment', match: {isDeleted: false}}),
+      Comment.find({post: req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+   ])
+      .then(([post, comments]) => {
+         res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError });
+      })
+      .catch((err) => {
+         console.log('err: ', err);
+         return res.json(err);
+      });
 });
 
 // Edit
@@ -123,10 +149,18 @@ module.exports = router;
 // Private functions
 // 로그인 여부를 확인한 다음 작성자 본인이 편집하는 지 체크
 function checkPermission(req, res, next) {
-	Post.findOne({_id: req.params.id}, function(err, post) {
-		if (err) return res.json(err);
-		if (post.author != req.user.id) return util.noPermission(req, res);
-		
-		next();
-	});
+   Post.findOne({_id: req.params.id}, function(err, post) {
+      if (err) return res.json(err);
+      if (post.author != req.user.id) return util.noPermission(req, res);
+      
+      next();
+   });
+}
+function checkPostId(req, res, next){ // 1
+  Post.findOne({_id:req.query.postId},function(err, post){
+    if(err) return res.json(err);
+
+    res.locals.post = post; // 1-1
+    next();
+  });
 }

@@ -1,52 +1,40 @@
 doctype html
 html
-	head
-		include ../partials/head.pug
-		script(src="/js/postEditor/showPost.js")
-	body
-		div.wrap
-			include ../partials/nav.pug
-			div.content
-				h2= post.title
-				div
-					div
-						// if post.attachment
-							div
-								small= "📁 Attachment: "+post.attachment.originalFileName+" ("+util.bytesToSize(post.attachment.size)+")"
-							div
-								img(src="../uploadedFiles/"+post.attachment.originalFileName)
-						#body(display="hidden")= post.body
-					
-					//div
-						div
-							div
-								span Author : 
-								= post.author ? post.author.username : ""
-							div
-								span Created : 
-								span(data-date-time=post.createdAt)
-							if post.updatedAt
-								div
-									span Updated : 
-									span(data-date-time=post.updatedAt)
-					
-				div.post-button
-					//a(href="/posts") Back
-					if (isAuthenticated && post.author && currentUser.id == post.author.id)
-						a(href="/posts/"+post._id+"/edit") Edit
-						form(action="/posts/"+post._id+"?_method=delete", method="post")
-							button(type="submit") Delete
-				div Comments
-					if comments.length
-						each comment in comments
-							p #{comment.author.username}
-							p #{comment.text}
-				div
-					form(action='/comments?postId='+post._id+getPostQueryString(true), method='post')
-						fieldset("!isAuthenticated?'disabled':''")
-							row
-								.col-8
-									textarea.form-control(name='text' rows='2') #{commentForm.form.text}
-								.col-4
-									button.btn.btn-primary.h-100.mr-2(type='submit') Add Comment
-			include ../partials/aside.pug
+   head
+      include ../partials/head.pug
+      script(src="/js/postEditor/showPost.js")
+   body
+      div.wrap
+         include ../partials/nav.pug
+         div.content
+            h2= post.title
+            div
+               div
+                  // if post.attachment
+                     div
+                        small= "📁 Attachment: "+post.attachment.originalFileName+" ("+util.bytesToSize(post.attachment.size)+")"
+                     div
+                        img(src="../uploadedFiles/"+post.attachment.originalFileName)
+                  #body(display="hidden")= post.body
+               div
+                  div
+                     div
+                        span Author : 
+                        = post.author ? post.author.username : ""
+                     div
+                        span Created : 
+                        span(data-date-time=post.createdAt)
+                     if post.updatedAt
+                        div
+                           span Updated : 
+                           span(data-date-time=post.updatedAt)
+
+            div
+               a(href="/posts") Back
+               if (isAuthenticated && post.author && currentUser.id == post.author.id)
+                  a(href="/posts/"+post._id+"/edit") Edit
+                  form(action="/posts/"+post._id+"?_method=delete", method="post")
+                     button(type="submit") Delete
+            div 
+               a(href="/posts/"+post._id+"/comment") 토론
+         include ../partials/aside.pug
