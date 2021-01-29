@@ -42,6 +42,33 @@ router.get('/new', util.isLoggedin, function(req, res) {
     var errors = req.flash('errors')[0] || {};
     res.render('posts/new', { post: post, errors: errors });
 });
+// comment create
+router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 1
+  var post = res.locals.post; // 1-1
+  req.body.author = req.user._id; // 2
+  req.body.post = req.params.id;// 2
+  console.log(req.params.id);
+  Comment.create(req.body, function(err, post){
+    if(err) return res.json(err);
+    return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
+  });
+});
+// comment index
+router.get('/:id/comment', function(req, res){ 
+  var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
+  Promise.all([
+      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
+      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+    ])
+    .then(([post, comments]) => {
+      res.render('posts/comment', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
+    })
+    .catch((err) => {
+      console.log('err: ', err);
+      return res.json(err);
+    });
+});
 
 // Create upload.single('attachment'), 잠시 뻈음
 router.post('/', util.isLoggedin, async function(req, res) {
@@ -128,4 +155,12 @@ function checkPermission(req, res, next) {
 		
 		next();
 	});
+}
+function checkPostId(req, res, next){ // 1
+  Post.findOne({_id:req.query.postId},function(err, post){
+    if(err) return res.json(err);
+
+    res.locals.post = post; // 1-1
+    next();
+  });
 }

@@ -26,6 +26,7 @@ router.get('/new', function(req, res) {
     res.render('users/new', { user: user, errors: errors, error: error });
 });
 
+
 // Create
 router.post('/', function(req, res) {
     User.create(req.body, function(err, user) {

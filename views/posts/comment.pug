@@ -1,0 +1,24 @@
+doctype html
+html
+	head
+		include ../partials/head.pug
+	body
+		div.wrap
+			include ../partials/nav.pug
+			div Comments
+				if comments.length
+					each comment in comments
+						if comment.author
+							p #{comment.author.username}
+						else
+							p 삭제된 사용잡니다
+						p #{comment.text}
+				div
+					form(action="/posts/"+post._id+"/comment", method='post')
+						fieldset("!isAuthenticated?'disabled':''")
+							row
+								.col-8
+									textarea.form-control(name='text' rows='2') #{commentForm.form.text}
+								.col-4
+									button.btn.btn-primary.h-100.mr-2(type='submit') Add Comment
+			include ../partials/aside.pug
