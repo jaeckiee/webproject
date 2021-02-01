@@ -4,6 +4,7 @@ import Post from "../models/Post.js";
 import File from "../models/File.js";
 import Image from "../models/Image.js";
 import Comment from "../models/Comment.js";
+import User from "../models/User.js"
 import util from "../util.js";
 import cheerio from "cheerio";
 
@@ -210,9 +211,9 @@ module.exports = router;
 // Private functions
 // 로그인 여부를 확인한 다음 작성자 본인이 편집하는 지 체크
 function checkPermission(req, res, next) {
-   Post.findOne({_id: req.params.id}, function(err, post) {
+   User.findOne({_id: req.user.id}, function(err, user) {
       if (err) return res.json(err);
-      if (post.author != req.user.id) return util.noPermission(req, res);
+      if (user.blacklist == false) return util.noPermission(req, res);
       
       next();
    });

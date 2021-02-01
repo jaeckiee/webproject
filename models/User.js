@@ -23,7 +23,8 @@ const userSchema = mongoose.Schema({
 		type:String,
 		match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Should be a valid email address!'],
 		trim: true
-	}
+	},
+	blacklist: { type: Boolean, default: true },
 },{
 	toObject:{virtuals:true}
 });
