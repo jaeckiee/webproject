@@ -12,17 +12,23 @@ html
 					theadt
 						th.text-left.col-md-2 아이디
 						th.col-md-8 토론 내용
+						th 삭제
 						th.text-right.col-md-2 날짜
 					tbody
 						if comments.length
 							each comment in comments
-								tr
-									if comment.author
-										td #{comment.author.username}
-									else
-										td 삭제된 사용자입니다.
-									td #{comment.text}
-									td.text-right 임시날짜.
+								div(id=comment._id)
+									tr
+										if comment.author
+											td #{comment.author.username}
+										else
+											td 삭제된 사용자입니다.
+										td #{comment.text}
+										td 
+											form(action="/posts/"+comment._id+"/comment?_method=delete", method="post")
+												button.btn.btn-danger(type="submit") Delete
+										td.date
+											span(data-date-time= comment.createdAt)
 				div
 					form(action="/posts/"+post._id+"/comment", method='post')
 						fieldset("!isAuthenticated?'disabled':''")

@@ -42,12 +42,12 @@ router.get('/new', util.isLoggedin, function(req, res) {
     var errors = req.flash('errors')[0] || {};
     res.render('posts/new', { post: post, errors: errors });
 });
+
 // comment create
 router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 1
   var post = res.locals.post; // 1-1
   req.body.author = req.user._id; // 2
   req.body.post = req.params.id;// 2
-  console.log(req.params.id);
   Comment.create(req.body, function(err, post){
     if(err) return res.json(err);
     return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
@@ -69,6 +69,21 @@ router.get('/:id/comment', function(req, res){
       return res.json(err);
     });
 });
+//comment destroy
+router.delete('/:id/comment', util.isLoggedin, checkPermission2, checkPostId, function(req, res){
+  var post = res.locals.post;
+  var sex;
+  req.body.author = req.user._id; // 2
+  Comment.findOne({_id:req.params.id},function(err,comment){
+		sex = comment.post
+	})
+  Comment.deleteOne({_id: req.params.id}, function(err,comment){
+	  console.log(comment.post)
+	  if(err) return res.json(err);
+	  return res.redirect('/posts/'+sex+res.locals.getPostQueryString()+'/comment');
+					});
+});
+
 
 // Create upload.single('attachment'), 잠시 뻈음
 router.post('/', util.isLoggedin, async function(req, res) {
@@ -155,6 +170,13 @@ function checkPermission(req, res, next) {
       
       next();
    });
+}
+function checkPermission2(req, res, next){ 
+  Comment.findOne({_id:req.params.id}, function(err, comment){
+    if(err) return res.json(err);
+    if(comment.author != req.user.id) return util.noPermission(req, res);
+    next();
+  });
 }
 function checkPostId(req, res, next){ // 1
   Post.findOne({_id:req.query.postId},function(err, post){
