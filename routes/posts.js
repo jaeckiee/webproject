@@ -86,15 +86,14 @@ router.get('/:id/comment', function(req, res){
 //comment destroy
 router.delete('/:id/comment', util.isLoggedin, checkPermission2, checkPostId, function(req, res){
   var post = res.locals.post;
-  var sex;
+  var post_Id;
   req.body.author = req.user._id; // 2
   Comment.findOne({_id:req.params.id},function(err,comment){
-		sex = comment.post
+		post_Id = comment.post
 	})
   Comment.deleteOne({_id: req.params.id}, function(err,comment){
-	  console.log(comment.post)
 	  if(err) return res.json(err);
-	  return res.redirect('/posts/'+sex+res.locals.getPostQueryString()+'/comment');
+	  return res.redirect('/posts/'+post_Id+res.locals.getPostQueryString()+'/comment');
 					});
 });
 
