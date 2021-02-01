@@ -1,5 +1,5 @@
 // , enctype="multipart/form-data" 잠시 뺌
-form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=put":"/posts", method="post", name="newPost")
+form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=put":"/posts", method="post")
 	div
 		h1(for="title") Title
 		input#title.form-control(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(post)?post.title:"")
@@ -10,7 +10,7 @@ form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=p
 		input#attachment(type="file", name="attachment")
 	div
 		label(for="body") Body
-		textarea#body(name="body", hidden)= (typeof post.body)?post.body:"tyujrtjyuyt"
+		textarea#body(name="body", hidden)= (typeof post.body)?post.body:""
 		.buttons
 			input#undo(type="button", value="UNDO")
 			input#redo(type="button", value="REDO")
@@ -25,12 +25,12 @@ form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=p
 				option(value="h5") H5
 				option(value="h6") H6
 			button#bold(type="button")
-				span.glyphicon.glyphicon-bold
+				span.glyphicon.glyphicon-bold#bold
 			button#italic(type="button")
 				span.glyphicon.glyphicon-italic
 			button#underline(type="button")
 				span 밑줄
-			input#strikeThrough(type="button", value="강조")
+			input#strikeThrough(type="button", value="취소선")
 			input#olist(type="button", value="글번호")
 			input#ulist(type="button", value="글머리")
 			button#justifyLeft(type="button")

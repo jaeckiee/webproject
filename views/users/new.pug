@@ -52,7 +52,7 @@ html
 										= errors.password.message
 							div
 								label(for="passwordConfirmation") Password Confirmation*
-								input.form-control(class=(errors.passwordConfirmation)?"is-invalid":"", type="text", name="passwordConfirmation", value="")
+								input.form-control(class=(errors.passwordConfirmation)?"is-invalid":"", type="password", name="passwordConfirmation", value="")
 								if errors.passwordConfirmination
 									div.alert.alert-danger(role="alert")
 										span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
