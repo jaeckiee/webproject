@@ -1,3 +1,20 @@
 .custom-btn-padding {
 	margin : 8px 8px 8px 0px;
 }
+#chatLog{
+	width: 70%; 
+	height: 500px;
+}
+#name{ 
+	width: 35%; 
+}
+
+#message{ 
+	width: 70%; 
+}
+
+.btn.btn-info{
+	width: 70%;
+	height: 45px;
+	font-size: 20px;
+}

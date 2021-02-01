@@ -1,0 +1,18 @@
+div
+	if isAuthenticated
+		button.btn.btn-info(type='button') 채팅
+	else
+		button.btn.btn-info(type='button') 로그인 후 이용해주세요.
+div
+	textarea#chatLog.form-control(readonly='')
+form#chat
+	if isAuthenticated
+		fieldset(disabled)
+			input#name.form-control(type='text' value=`${currentUser.username}`)
+		input#message.form-control(type='text')
+		button#send.btn.btn-primary(type='submit') 전송
+	else
+		fieldset(disabled)
+			input#name.form-control(type='text')
+			input#message.form-control(type='text')
+			button#send.btn.btn-primary(type='submit') 전송
