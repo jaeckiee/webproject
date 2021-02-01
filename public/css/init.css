@@ -1,6 +1,19 @@
 .custom-btn-padding {
 	margin : 8px 8px 8px 0px;
 }
+
+.ui-helper-hidden-accessible {
+	display: none;
+}
+
+.ui-menu {
+	padding-left: 0px;
+}
+
+.ui-menu-item {
+	list-style-type: none;
+}
+
 #chatLog{
 	width: 70%; 
 	height: 500px;

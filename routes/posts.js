@@ -30,9 +30,23 @@ router.get('/', function(req, res) {
 // Search
 router.get('/search', function(req, res){
     Post.find({title: { $regex: new RegExp(req.query.search, 'i') }})
+	.populate('author')
     .exec(function(err, posts) {
         if (err) return res.json(err);
         res.render('posts/search', { posts: posts });
+    });
+});
+
+// Autocomplete
+router.get('/search/autocomplete', function(req, res, next) {
+    Post.find({}, 'title')
+	.exec(function(err, posts) {
+        if (err) return res.json(err);
+		var list=[];
+		for (var i in posts){
+			list.push(posts[i].title);
+		}
+        res.json(list);
     });
 });
 
