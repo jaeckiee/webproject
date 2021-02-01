@@ -1,20 +1,12 @@
 import express from "express";
 var router = express.Router();
-// import multer from "multer";   // form에 포함된 파일을 multer로 읽어와야 함.
-// var storage = multer.diskStorage({   // multer가 저장할 때 파일 간 이름 충돌을 방지하기 위해 랜덤한 이름의 바이너리 파일(확장자x)로 저장하는데 일단 원래 형식으로 저장하게끔 바꿈
-//    destination: function(req, file, cb) {
-//       cb(null, 'public/uploadedFiles/');
-//    },
-//    filename: function(req, file, cb) {
-//       cb(null, file.originalname);
-//    }
-// });
-// var upload = multer({ storage: storage });
-// var upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });   // 메모리에 파일을 buffer로 저장하고 업로드 20 MB 제한
 import Post from "../models/Post.js";
 import File from "../models/File.js";
+import Image from "../models/Image.js";
 import Comment from "../models/Comment.js";
 import util from "../util.js";
+import cheerio from "cheerio";
+
 
 // Index
 router.get('/', function(req, res) {
@@ -98,42 +90,61 @@ router.delete('/:id/comment', util.isLoggedin, checkPermission2, checkPostId, fu
 });
 
 
-// Create upload.single('attachment'), 잠시 뻈음
-router.post('/', util.isLoggedin, async function(req, res) {
-   // var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined;   // form에서 받아들인 file을 토대로 File 인스턴스 생성
-   // req.body.attachment = attachment;
+
+// Create
+router.post('/', util.isLoggedin, function(req, res) {
     req.body.author = req.user._id;
+	// 새 post 생성하고 얻은 id를 img태그에 붙이고, src는 Image로 따로 뺌.
     Post.create(req.body, function(err, post) {
-        if (err) {
-            req.flash('post', req.body);
-            req.flash('errors', util.parseError(err));
-            return res.redirect('/posts/new');
-        }
-      // if (attachment) {
-      //    attachment.postId = post._id;
-      //    attachment.save();
-      // }
+		if (err) {
+			req.flash('post', req.body);
+			req.flash('errors', util.parseError(err));
+			return res.redirect('/posts/new');
+		}
+		// cheerio는 서버 단에서 jquery 구문을 쓸 수 있도록 해주는 모듈.
+		var $ = cheerio.load(req.body.body);
+		$('body').find('img').each(function(item, idx, array) {
+			var src = $(this).attr('src');
+			Image.create({src: $(this).attr('src'), postId: post.id, idx: item });
+			$(this).attr('id', post.id+'_'+item);
+			$(this).removeAttr('src');
+		});
+		Post.findOneAndUpdate({_id: post.id}, {$set:{body:$('body').html()}}, {runValidators:true}, function(err, post) {
+			if (err) {
+				req.flash('post', req.body);
+				req.flash('errors', util.parseError(err));
+				return res.redirect('/posts/new');
+			}
+		});
         res.redirect('/posts');
     });
 });
 
 // Show
 router.get('/:id', function(req, res) {
-   var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
-   var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
+	var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+	var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
 
-   Promise.all([
-      Post.findOne({_id: req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment', match: {isDeleted: false}}),
-      Comment.find({post: req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
-   ])
-      .then(([post, comments]) => {
-         res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError });
-      })
-      .catch((err) => {
-         console.log('err: ', err);
-         return res.json(err);
-      });
+	Promise.all([
+		Post.findOne({_id: req.params.id}).populate({ path: 'author', select: 'username' }).populate({path: 'attachment', match: {isDeleted: false}}),
+		Comment.find({post: req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+	])
+		.then(([post, comments]) => {
+			res.render('posts/show', { post:post, comments:comments, commentForm:commentForm, commentError:commentError });
+		})
+		.catch((err) => {
+			console.log('err: ', err);
+			return res.json(err);
+		});
 });
+
+// Image Rendering
+router.get('/imgs/:id', function(req, res) {
+	Image.find({postId: req.params.id}, function(err, imgs) {
+		if (err) return res.json(err);
+		res.json(imgs);
+	})
+})
 
 // Edit
 router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res) {
@@ -154,18 +165,40 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res) {
 // Update
 router.put('/:id', util.isLoggedin, checkPermission, function(req, res) {
     req.body.updatedAt = Date.now();
+	
+	// 당장의 해결 : 먼저 update 한 번 하고 에러가 생기면 새로고침. 안 생기면 이미지들 뺴고 다시 update...
     Post.findOneAndUpdate({_id: req.params.id}, req.body, {runValidators:true}, function(err, post) {
         if (err) {
             req.flash('post', req.body);
             req.flash('errors', util.parseError(err));
             return res.redirect('/posts/'+req.params.id+'/edit');
         }
+		Image.deleteMany({postId: req.params.id}, function(err) {
+			if (err) return res.json(err);
+		});
+		var $ = cheerio.load(req.body.body);
+		$('body').find('img').each(function(item, idx, array) {
+			var src = $(this).attr('src');
+			Image.create({src: $(this).attr('src'), postId: post.id, idx: item });
+			$(this).attr('id', post.id+'_'+item);
+			$(this).removeAttr('src');
+		});
+		Post.findOneAndUpdate({_id: post.id}, {$set:{body:$('body').html()}}, {runValidators:true}, function(err, post) {
+			if (err) {
+				req.flash('post', req.body);
+				req.flash('errors', util.parseError(err));
+				return res.redirect('/posts/'+req.params.id+'/edit');
+			}
+		});
         res.redirect('/posts/'+req.params.id);
     });
 });
 
 // Destroy
 router.delete('/:id', util.isLoggedin, checkPermission, function(req, res) {
+	Image.deleteMany({postId: req.params.id}, function(err) {
+		if (err) return res.json(err);
+	});
     Post.deleteOne({_id: req.params.id}, function(err) {
         if (err) return res.json(err);
         res.redirect('/posts');
