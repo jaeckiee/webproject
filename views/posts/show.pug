@@ -22,14 +22,14 @@ html
 								span Updated :
 								span(data-date-time=post.updatedAt)
 					div
-						span#body(style="display: none")= post.body
+						span= post.body
 
 					div
 						a.btn.btn-primary(href="/posts") Back
 						if (isAuthenticated && post.author && currentUser.id == post.author.id)
-							a.btn.btn-primary(href="/posts/"+post._id+"/edit") Edit
-							form(action="/posts/"+post._id+"?_method=delete", method="post")
-								button.btn.btn-danger(type="submit") Delete
+						a.btn.btn-primary(href="/posts/"+post._id+"/edit") Edit
+						form(action="/posts/"+post._id+"?_method=delete", method="post")
+							button.btn.btn-danger(type="submit") Delete
 				div.col-md-3
 					include ../partials/aside.pug
 					include ../chat/chat.pug

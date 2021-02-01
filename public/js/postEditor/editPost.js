@@ -5,20 +5,6 @@ window.onload = function() {	// html 상단에서 로드하지만 html이 모두
 		document.getElementById('editor').innerHTML = document.getElementById('body').value;
 	}
 	
-	// db에서 이미지 src들을 가져와 img태그에 채워줌.
-	var postId = window.location.pathname.split("/");
-	postId = postId[postId.length-2];
-	$.ajax({
-		type: 'get',
-		url: "/posts/imgs/"+postId,
-		dataType: 'json'
-	})
-	.done(function(imgs) {
-		console.log(imgs[i]);
-		for (var i=0; i < imgs.length; i++)
-			document.getElementById(postId+'_'+imgs[i].idx).src = imgs[i].src;
-	});
-	
 	// #Post를 제출하면 #editor의 html을 #body에 text로 채움.
 	document.getElementById('Post')
 		.addEventListener('submit', () => {
@@ -26,9 +12,9 @@ window.onload = function() {	// html 상단에서 로드하지만 html이 모두
 			var htmlView = document.getElementById('htmlView');
 			if (htmlView.checked)
 				editor.innerHTML = editor.innerText;
-			
 			document.getElementById('body').value = editor.innerHTML;
 		});
+	
 	
 	// 효과들.
 	document.getElementById('undo')
@@ -85,19 +71,23 @@ window.onload = function() {	// html 상단에서 로드하지만 html이 모두
 	
 	document.getElementById('hyperlink')
 		.addEventListener('click', () => {
+		
 			var sLink = prompt('Write the URL here','http:\/\/');
 			var sText = document.getSelection();
-			if (sLink&&sLink!=''&&sLink!='http://')
+			if(sLink&&sLink!=''&&sLink!='http://')
 				document.execCommand('insertHTML', false, '<a href="'+sLink+'" target="_blank">'+sText+'</a>');
+		
 		});
 	
 	document.getElementById('insertImage')
 		.addEventListener('change', (evt) => {
+		
 			for (var img of evt.target.files) {
 				var reader = new FileReader();
 				reader.readAsDataURL(img);
 				reader.onload = () => document.execCommand('insertImage', false, reader.result);
 			}
+		
 		});
 	
 	document.getElementById('htmlView')
