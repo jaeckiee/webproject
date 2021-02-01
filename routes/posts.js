@@ -22,9 +22,23 @@ router.get('/', function(req, res) {
 // Search
 router.get('/search', function(req, res){
     Post.find({title: { $regex: new RegExp(req.query.search, 'i') }})
+	.populate('author')
     .exec(function(err, posts) {
         if (err) return res.json(err);
         res.render('posts/search', { posts: posts });
+    });
+});
+
+// Autocomplete
+router.get('/search/autocomplete', function(req, res, next) {
+    Post.find({}, 'title')
+	.exec(function(err, posts) {
+        if (err) return res.json(err);
+		var list=[];
+		for (var i in posts){
+			list.push(posts[i].title);
+		}
+        res.json(list);
     });
 });
 
@@ -40,7 +54,6 @@ router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 
   var post = res.locals.post; // 1-1
   req.body.author = req.user._id; // 2
   req.body.post = req.params.id;// 2
-  console.log(req.params.id);
   Comment.create(req.body, function(err, post){
     if(err) return res.json(err);
     return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
@@ -62,6 +75,20 @@ router.get('/:id/comment', function(req, res){
       return res.json(err);
     });
 });
+//comment destroy
+router.delete('/:id/comment', util.isLoggedin, checkPermission2, checkPostId, function(req, res){
+  var post = res.locals.post;
+  var post_Id;
+  req.body.author = req.user._id; // 2
+  Comment.findOne({_id:req.params.id},function(err,comment){
+		post_Id = comment.post
+	})
+  Comment.deleteOne({_id: req.params.id}, function(err,comment){
+	  if(err) return res.json(err);
+	  return res.redirect('/posts/'+post_Id+res.locals.getPostQueryString()+'/comment');
+					});
+});
+
 
 
 // Create
@@ -189,6 +216,13 @@ function checkPermission(req, res, next) {
       
       next();
    });
+}
+function checkPermission2(req, res, next){ 
+  Comment.findOne({_id:req.params.id}, function(err, comment){
+    if(err) return res.json(err);
+    if(comment.author != req.user.id) return util.noPermission(req, res);
+    next();
+  });
 }
 function checkPostId(req, res, next){ // 1
   Post.findOne({_id:req.query.postId},function(err, post){

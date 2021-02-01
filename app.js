@@ -16,6 +16,27 @@ import util from "./util.js";
 import moment from "moment-timezone";
 const app = express();
 const PORT = 3000;
+const http = require('http').Server(app);
+var io = require('socket.io')(http);
+var path = require('path');
+
+http.listen(PORT, function(){ 
+	console.log('server on..');
+});
+
+var count=1;
+io.on('connection',function(socket){
+	console.log('user connected: ', socket.id);
+	socket.on('disconnect', function(){
+		console.log('user disconnected: '+ socket.id + ' ' + socket.name );
+	});
+	socket.on('send message', function(name,text){
+		var msg = name + ' : ' + text;
+		socket.name = name;
+		console.log(msg);
+		io.emit('receive message',msg);
+	});
+});
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -32,7 +53,7 @@ db.on('error',(err) => {
 });
 
 //setting
-app.listen(PORT, (req,res) => console.log(`server start`));
+//app.listen(PORT, (req,res) => console.log(`server start`));
 app.set("view engine", "pug");
 app.use(express.static(__dirname+'/public'));
 app.use(cookieParser());
