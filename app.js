@@ -14,6 +14,8 @@ import Post from "./models/Post.js";
 import userRouter from "./routes/users.js";
 import util from "./util.js";
 import moment from "moment-timezone";
+//사용자 ip를 가져오기 위한 모듈
+import requestIp from "request-ip";
 const app = express();
 const PORT = 3000;
 const http = require('http').Server(app);
@@ -31,10 +33,15 @@ io.on('connection',function(socket){
 		console.log('user disconnected: '+ socket.id + ' ' + socket.name );
 	});
 	socket.on('send message', function(name,text){
-		var msg = name + ' : ' + text;
-		socket.name = name;
-		console.log(msg);
-		io.emit('receive message',msg);
+		if(name && text){
+			var msg = name + '(' + socket.handshake.address.substring(7,13) + ')' + ' : ' + text;
+			io.emit('receive message',msg);
+		}
+		else{
+			var msg = '이름이나 메세지를 비우지 마세요.';
+			console.log(msg);
+			io.to(socket.id).emit('undefined',msg);
+		}
 	});
 });
 

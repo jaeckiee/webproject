@@ -15,7 +15,10 @@
 }
 
 #chatLog{
-	width: 70%; 
+    background:#fff;
+    overflow:hidden;
+    padding:0;
+	width: 90%; 
 	height: 500px;
 }
 #name{ 
@@ -23,11 +26,14 @@
 }
 
 #message{ 
-	width: 70%; 
+	width: 90%; 
 }
 
-.btn.btn-info{
-	width: 70%;
-	height: 45px;
-	font-size: 20px;
+.top-bar {
+	width:90%;
+	text-align:center;
+  background: blueviolet;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
