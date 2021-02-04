@@ -54,6 +54,7 @@ router.get('/new', util.isLoggedin, function(req, res) {
 router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 1
   var post = res.locals.post; // 1-1
   req.body.author = req.user._id; // 2
+  req.body.authorname=req.user.name;
   req.body.post = req.params.id;// 2
   Comment.create(req.body, function(err, post){
     if(err) return res.json(err);

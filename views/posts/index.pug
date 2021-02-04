@@ -22,7 +22,7 @@ html
 									th.post-title
 										a(href="/posts/"+post._id)= post.title
 									th.post-author
-										span= (post.author) ? post.author.username : ""
+										span= (post.author) ? post.author.name : ""
 									th.post-date
 										span(data-date=post.createdAt)
 

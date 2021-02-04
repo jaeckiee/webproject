@@ -10,7 +10,7 @@ html
 					form(action="/login", method="post")
 						h3 Login
 						div
-							label(for="username") Username
+							label(for="username") UserId
 							input.form-control(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)
 							if errors.username
 								div.alert.alert-danger(role="alert")

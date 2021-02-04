@@ -16,8 +16,9 @@ const userSchema = mongoose.Schema({
 	name: {
 		type:String,
 		required: [true, 'Name is required'],
-		match: [/^.{4,12}$/, 'Should be 4-12 characters!'],
-		trim: true
+		match: [/^.{3,12}$/, 'Should be 3-12 characters!'],
+		trim: true,
+		unique: true
 	},
 	email: {
 		type:String,
