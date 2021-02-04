@@ -11,6 +11,7 @@ import methodOverride from "method-override";
 import homeRouter from "./routes/home.js";
 import postRouter from "./routes/posts.js";
 import Post from "./models/Post.js";
+import Chat from "./models/Chat.js";
 import userRouter from "./routes/users.js";
 import util from "./util.js";
 import moment from "moment-timezone";
@@ -24,25 +25,6 @@ var path = require('path');
 
 http.listen(PORT, function(){ 
 	console.log('server on..');
-});
-
-var count=1;
-io.on('connection',function(socket){
-	console.log('user connected: ', socket.id);
-	socket.on('disconnect', function(){
-		console.log('user disconnected: '+ socket.id + ' ' + socket.name );
-	});
-	socket.on('send message', function(name,text){
-		if(name && text){
-			var msg = name + '(' + socket.handshake.address.substring(7,13) + ')' + ' : ' + text;
-			io.emit('receive message',msg);
-		}
-		else{
-			var msg = '이름이나 메세지를 비우지 마세요.';
-			console.log(msg);
-			io.to(socket.id).emit('undefined',msg);
-		}
-	});
 });
 
 mongoose.set('useNewUrlParser', true);
@@ -78,7 +60,94 @@ app.use((req,res,next) => {
 	res.locals.isAuthenticated = req.isAuthenticated();
 	res.locals.currentUser = req.user;
 	res.locals.util = util;
+	res.locals.Chat = Chat;
 	next();
+});
+var count=1;
+io.on('connection',function(socket){
+	console.log('user connected: ', socket.id);
+	socket.on('disconnect', function(){
+		console.log('user disconnected: '+ socket.id + ' ' + socket.name );
+	});
+	socket.on('send message', function(userId,name,text){
+		if(name && text){
+			console.log(userId);
+			var msg = name + '(' + socket.handshake.address.substring(7,13) + ')' + ' : ' + text;
+			if(userId == undefined){
+				var current_chat = {
+					username : name,
+					comment : text,
+					ip : socket.handshake.address
+				};
+			}
+			else{
+				var tempname = userId.username;
+				var current_chat = {
+					userID : tempname,
+					username : name,
+					comment : text,
+					ip : socket.handshake.address
+				};
+			}
+			var current_chat;
+			Chat.create(current_chat,(err,chat) => {
+				if(err) res.json(err);
+				console.log(chat);
+				current_chat = chat;
+			});
+			io.to(socket.id).emit('receive my message',msg);
+			socket.broadcast.emit('receive other message',msg);
+			/*
+			if(userId == undefined){
+				io.emit('receive other message',msg);
+			}
+			else{
+				if(current_chat.userID == userId.username){
+					io.to(socket.id).emit('receive my message',msg);
+					socket.broadcast.emit('receive other message',msg);
+				}
+				else{
+					io.emit('receive other message',msg);
+				}	
+			}
+			*/
+		}
+		else{
+			var msg = '이름이나 메세지를 비우지 마세요.';
+			console.log(msg);
+			io.to(socket.id).emit('undefined',msg);
+		}
+	});
+	socket.on('chat load',function(userId){
+		Chat.find({})
+		.limit(100)
+		.sort('date')
+		.exec(function(err,chats){
+			if(err) console.log("에러on");
+			for(var i in chats){
+				var msg = chats[i].username + '(' + chats[i].ip.substring(7,13) + ')' + ' : ' + chats[i].comment;
+				if(userId == undefined){
+					//로그인 안한 경우
+					io.to(socket.id).emit('receive other message',msg);
+				}
+				else{
+					//로그인 한 경우 id가 일치한지 따라 나누기.
+					if(chats[i].userID == userId.username){
+						io.to(socket.id).emit('receive my message',msg);	
+					}
+					else{
+						io.to(socket.id).emit('receive other message',msg);
+					}	
+				}
+			}
+		});
+	});
+	
+});
+
+app.get("/chat",function(req,res,next){
+	console.log(req.user);
+	res.json(req.user);
 });
 app.use(function(req, res, next){
 	Post.find({})

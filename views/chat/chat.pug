@@ -7,7 +7,8 @@ div
 	div#chatLog.form-group(readonly='' style='overflow:scroll')
 		div.text-center
 			span.alert.alert-success(style="display : inline-block") 환영합니다.
-form#chat
+			
+form#chat(action="/chat" method="get")
 	input#name.form-control(type='text')
 	input#message.form-control(type='text')
 	button#send.btn.btn-primary(type='submit') 전송
