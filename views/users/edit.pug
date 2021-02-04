@@ -18,7 +18,7 @@ html
 									span.sr-only Error:
 									=errors.currentPassword.message
 						div
-							label(for="username") Username*
+							label(for="username") UserId*
 							input.form-control(class=(errors.username)?"is-invalid":"", type="text", name="username", value=user.username)
 							if errors.username
 								div.alert.alert-danger(role="alert")
@@ -26,7 +26,7 @@ html
 									span.sr-only Error:
 									= errors.username.message
 						div
-							label(for="name") Name*
+							label(for="name") Nickname*
 							input.form-control(class=(errors.name)?"is-invalid":"", type="text", name="name", value=user.name)
 							if errors.name
 								div.alert.alert-danger(role="alert")

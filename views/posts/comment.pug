@@ -10,7 +10,7 @@ html
 				h2 최근 토론 내역
 				table.table.table-hover(style="table-layout: fixed; word-break: break-all")
 					theadt
-						th.text-left.col-md-2 아이디
+						th.text-left.col-md-2 별명
 						th.col-md-8 토론 내용
 						th.col-md-2.text-right 삭제
 						th.text-right.col-md-2 날짜
@@ -20,7 +20,7 @@ html
 								div(id=comment._id)
 									tr
 										if comment.author
-											td #{comment.author.username}
+											td #{comment.authorname}
 										else
 											td 삭제된 사용자입니다.
 										td #{comment.text}
