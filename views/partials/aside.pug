@@ -11,8 +11,8 @@ table.table.table-hover
 				-var seoulnow = moment(datenow.getTime()).tz('Asia/Seoul')
 				-var seoulpostupdatedAt = moment(post.updatedAt.getTime()).tz('Asia/Seoul')
 				if (seoulnow.format('YYYY-MM-DD') === seoulpostupdatedAt.format('YYYY-MM-DD'))
-					th.row
+					th.row.text-right
 						span= seoulpostupdatedAt.format('HH:mm')
 				else
-					th.row
+					th.row.text-right
 						span= seoulpostupdatedAt.format('YYYY-MM-DD')

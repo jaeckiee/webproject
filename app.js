@@ -71,7 +71,7 @@ io.on('connection',function(socket){
 	});
 	socket.on('send message', function(userId,name,text){
 		if(name && text){
-			console.log(userId);
+			//console.log(userId);
 			var msg = name + '(' + socket.handshake.address.substring(7,13) + ')' + ' : ' + text;
 			if(userId == undefined){
 				var current_chat = {
@@ -90,13 +90,16 @@ io.on('connection',function(socket){
 				};
 			}
 			var current_chat;
+			var seouldate,seoultime;
 			Chat.create(current_chat,(err,chat) => {
 				if(err) res.json(err);
 				console.log(chat);
 				current_chat = chat;
+				seouldate = moment(chat.date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
+				seoultime = moment(chat.date.getTime()).tz('Asia/Seoul').format("HH:mm");
 			});
-			io.to(socket.id).emit('receive my message',msg);
-			socket.broadcast.emit('receive other message',msg);
+			io.to(socket.id).emit('receive my message',msg,seouldate,seoultime);
+			socket.broadcast.emit('receive other message',msg,seouldate,seoultime);
 			/*
 			if(userId == undefined){
 				io.emit('receive other message',msg);
@@ -125,18 +128,20 @@ io.on('connection',function(socket){
 		.exec(function(err,chats){
 			if(err) console.log("에러on");
 			for(var i in chats){
+				var seouldate = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
+				var seoultime = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("HH:mm");
 				var msg = chats[i].username + '(' + chats[i].ip.substring(7,13) + ')' + ' : ' + chats[i].comment;
 				if(userId == undefined){
 					//로그인 안한 경우
-					io.to(socket.id).emit('receive other message',msg);
+					io.to(socket.id).emit('receive other message',msg,seouldate,seoultime);
 				}
 				else{
 					//로그인 한 경우 id가 일치한지 따라 나누기.
 					if(chats[i].userID == userId.username){
-						io.to(socket.id).emit('receive my message',msg);	
+						io.to(socket.id).emit('receive my message',msg,seouldate,seoultime);	
 					}
 					else{
-						io.to(socket.id).emit('receive other message',msg);
+						io.to(socket.id).emit('receive other message',msg,seouldate,seoultime);
 					}	
 				}
 			}
