@@ -6,9 +6,9 @@ html
 		div.container-fluid
 			div.row
 				include ../partials/nav.pug
-				div.col-md-6.col-md-offset-3
+				div.col-md-6.col-md-offset-3.bg-danger
 					form(action="/login", method="post")
-						h3 Login
+						h1 Login
 						div
 							label(for="username") UserId
 							input.form-control(class=(errors.username)?"is-valid":"", type="text", name="username", value=username)

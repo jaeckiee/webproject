@@ -6,37 +6,40 @@ html
 		div.container-fluid
 			div.row
 				include ../partials/nav.pug
-			div.col-md-6.col-md-offset-3
-				h2 최근 토론 내역
-				table.table.table-hover(style="table-layout: fixed; word-break: break-all")
-					theadt
-						th.text-left.col-md-2 별명
-						th.col-md-8 토론 내용
-						th.col-md-2.text-right 삭제
-						th.text-right.col-md-2 날짜
-					tbody
-						if comments.length
-							each comment in comments
-								div(id=comment._id)
-									tr
-										if comment.author
-											td #{comment.authorname}
-										else
-											td 삭제된 사용자입니다.
-										td #{comment.text}
-										td 
-											form.text-right(action="/posts/"+comment._id+"/comment?_method=delete", method="post")
-												button.btn.btn-danger(type="submit") Delete
-										td.date
-											span(data-date-time= comment.createdAt)
-				div
-					form(action="/posts/"+post._id+"/comment", method='post')
-						fieldset("!isAuthenticated?'disabled':''")
-							row
-								div
-									textarea.form-control(name='text' rows='2') #{commentForm.form.text}
-								div.text-right
-									a.btn.btn-primary.custom-btn-padding(href=`/posts/${post.id}`) Back
-									button.btn.btn-success.custom-btn-padding(type='submit') Add Comment
-				include ../partials/aside.pug
-				include ../chat/chat.pug
+				div.col-md-6.col-md-offset-3.bg-danger
+					h1= "최근 토론 내역: " + post.title
+					table.table.table-hover(style="table-layout: fixed; word-break: break-all")
+						theadt
+							th.text-left.col-md-2 별명
+							th.col-md-6 토론 내용
+							th.col-md-2.text-right 삭제
+							th.text-right.col-md-2 날짜
+						tbody
+							if comments.length
+								each comment in comments
+									div(id=comment._id)
+										tr
+											if comment.author
+												td #{comment.authorname}
+											else
+												td 삭제된 사용자입니다.
+											td #{comment.text}
+											td 
+												form.text-right(action="/posts/"+comment._id+"/comment?_method=delete", method="post")
+													button.btn.btn-danger(type="submit") Delete
+											td.date
+												span(data-date-time= comment.createdAt)
+					div
+						if (isAuthenticated)
+							form(action="/posts/"+post._id+"/comment", method='post')
+								row
+									div
+										textarea.form-control(name='text' rows='2') #{commentForm.form.text}
+									div.text-right
+										a.btn.btn-primary.custom-btn-padding(href=`/posts/${post.id}`) Back
+										button.btn.btn-success.custom-btn-padding(type='submit') Add Comment
+						else
+							h4 로그인하셔야 토론에 참여하실 수 있습니다.
+				div.col-md-3
+					include ../partials/aside.pug
+					include ../chat/chat.pug

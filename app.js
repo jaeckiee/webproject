@@ -27,13 +27,16 @@ http.listen(PORT, function(){
 	console.log('server on..');
 });
 
+
+//////////////////////////////////////////////////////////////// DB SETTING
+
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 mongoose.connect('mongodb+srv://captainroh:shwnsdud12@cluster0.lspep.mongodb.net/Cluster0?retryWrites=true&w=majority');//db 연결시 고쳐야 
-var db = mongoose.connection;
 
+var db = mongoose.connection;
 db.once('open',function(){
 	console.log('DB connected');
 });
@@ -41,7 +44,8 @@ db.on('error',(err) => {
 	  console.log('DB ERROR : ', err);
 });
 
-//setting
+//////////////////////////////////////////////////////////////// MIDDLEWARE SETTING
+
 //app.listen(PORT, (req,res) => console.log(`server start`));
 app.set("view engine", "pug");
 app.use(express.static(__dirname+'/public'));
@@ -63,6 +67,7 @@ app.use((req,res,next) => {
 	res.locals.Chat = Chat;
 	next();
 });
+
 var count=1;
 io.on('connection',function(socket){
 	console.log('user connected: ', socket.id);
@@ -129,7 +134,7 @@ io.on('connection',function(socket){
 			for(var i in chats){
 				var seouldate = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
 				var seoultime = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("HH:mm");
-				var msg = chats[i].username + '(' + chats[i].ip.substring(7,13) + ')' + ' : ' + chats[i].comment;
+				var msg = chats[i].username + '(' + ((chats[i].ip != undefined)?chats[i].ip.substring(7,13):"") + ')' + ' : ' + chats[i].comment;
 				if(userId == undefined){
 					//로그인 안한 경우
 					io.to(socket.id).emit('receive other message',msg,seouldate,seoultime);
@@ -165,8 +170,8 @@ app.use(function(req, res, next){
 		next();
 	});
 });
-app.use("/",homeRouter);
-app.use("/posts",util.getPostQueryString, postRouter);
+app.use("/", homeRouter);
+app.use("/posts", util.getPostQueryString, postRouter);
 app.use("/users", userRouter);
 
 export default app;

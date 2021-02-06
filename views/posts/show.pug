@@ -7,13 +7,14 @@ html
 		div.container-fluid
 			div.row
 				include ../partials/nav.pug
-				div.col-md-6.col-md-offset-3
+				div.col-md-6.col-md-offset-3.bg-danger
 					div
 						div
-							h2= post.title
+							h1= post.title
 						div.text-right
 							a(href="/posts/"+post._id+"/comment") 최근 토론 내역
-					div.row
+							br
+							a(href="/posts/"+post._id+"/hists") 히스토리
 						div.text-right
 							span Created :
 							span(data-date-time= post.createdAt)
@@ -26,7 +27,7 @@ html
 
 					div
 						a.btn.btn-primary(href="/posts") Back
-						if (isAuthenticated && post.author && currentUser.id == post.author.id)
+						if (isAuthenticated)
 							a.btn.btn-primary(href="/posts/"+post._id+"/edit") Edit
 							form(action="/posts/"+post._id+"?_method=delete", method="post")
 								button.btn.btn-danger(type="submit") Delete

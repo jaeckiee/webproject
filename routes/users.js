@@ -3,6 +3,8 @@ var router = express.Router();
 import User from "../models/User.js";
 import util from "../util.js";
 import passport from "../config/passport.js";
+
+
 // Index
 router.get('/', function(req, res) {
     User.find({})
@@ -33,7 +35,7 @@ router.post('/', function(req, res) {
             req.flash('user', req.body);
             req.flash('errors', util.parseError(err));
             return res.redirect('/users/new');
-        }77
+        }
         res.redirect('/users');
     });
 });

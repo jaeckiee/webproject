@@ -8,7 +8,7 @@ div
 		div.text-center
 			span.alert.alert-success(style="display : inline-block") 환영합니다.
 			
-form#chat(action="/chat" method="get")
+form#chat(action="/chat", method="get", autocomplete="off")
 	input#name.form-control(type='text')
 	input#message.form-control(type='text')
 	button#send.btn.btn-primary(type='submit') 전송

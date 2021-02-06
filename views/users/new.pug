@@ -7,7 +7,7 @@ html
 		div.container-fluid
 			div.row
 				include ../partials/nav.pug
-				div.col-md-6.col-md-offset-3
+				div.col-md-6.col-md-offset-3.bg-danger
 					div
 						if error
 							div.alert.alert-danger(role="alert")
@@ -15,7 +15,7 @@ html
 								span.sr-only Error:
 								= error
 
-						h3 New User
+						h1 New User
 
 						form(action="/users", method="post")
 							div

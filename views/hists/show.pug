@@ -1,0 +1,27 @@
+doctype html
+html
+	head
+		include ../partials/head.pug
+		script(src="/js/postEditor/showHist.js")
+	body.bg-info
+		div.container-fluid
+			div.row
+				include ../partials/nav.pug
+				div.col-md-6.col-md-offset-3.bg-danger
+					div
+						div
+							h1= hist.title
+							h4= '"'+hist.editMsg+'"'
+						div.text-right
+							span Updated :
+							span(data-date-time= hist.updatedAt)
+					div
+						span#body(style="display: none")= hist.body
+
+					div
+						a.btn.btn-primary(href="/posts/"+hist.postId+"/hists") Back
+						if (isAuthenticated)
+							a.btn.btn-primary(href="/posts/"+hist.postId+"/hists/"+hist._id+"/edit") 이 시점에서 편집
+				div.col-md-3
+					include ../partials/aside.pug
+					include ../chat/chat.pug

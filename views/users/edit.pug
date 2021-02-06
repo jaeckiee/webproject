@@ -6,7 +6,7 @@ html
 		div.container-fluid
 			div.row
 				include ../partials/nav.pug
-				div.col-md-6.col-md-offset-3
+				div.col-md-6.col-md-offset-3.bg-danger
 					h1 Edit Your Information
 					form(action="/users/"+user.username+"?_method=put", method="post")
 						div

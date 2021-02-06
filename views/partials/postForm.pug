@@ -1,13 +1,12 @@
 // , enctype="multipart/form-data" 잠시 뺌
-form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=put":"/posts", method="post")
+form#Post(action=(typeof post._id != 'undefined')?((typeof post.postId != 'undefined')? "/posts/"+post.postId+"?_method=put":"/posts/"+post._id+"?_method=put"):"/posts", method="post")
+	h1(for="title")= (typeof post.title != 'undefined')?post.title : "New Post"
 	div
-		h1(for="title") Title
-		input#title.form-control(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(post)?post.title:"")
+		if (typeof post._id == 'undefined')
+			label(for="title") Title
+		input#title.form-control(class=(errors.title)?"is-invalid":"", type="text", name="title", value=(typeof post._id != 'undefined')?post.title:"", style=(typeof post._id != 'undefined')?"display: none":"")
 		if (errors.title)
 			span= errors.title.message
-	// div
-		label(for="attachment") Attachment
-		input#attachment(type="file", name="attachment")
 	div
 		label(for="body") Body
 		textarea#body(name="body", hidden)= (typeof post.body)?post.body:""
@@ -54,6 +53,10 @@ form#Post(action=(typeof post._id != 'undefined')?"/posts/"+post._id+"?_method=p
 			span= errors.body.message
 	if errors.unhandled
 		div= errors.unhandled
+	if (typeof post._id != 'undefined')
+		div
+			label(for="editMsg") Edit message
+			input#editMsg.form-control(class=(errors.title)?"is-invalid":"", type="text", name="editMsg")
 	div
 		a.btn.btn-primary(href="/posts") Back
 		button.btn.btn-primary(type="submit") Submit
