@@ -93,13 +93,12 @@ io.on('connection',function(socket){
 			var seouldate,seoultime;
 			Chat.create(current_chat,(err,chat) => {
 				if(err) res.json(err);
-				console.log(chat);
 				current_chat = chat;
-				seouldate = moment(chat.date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
-				seoultime = moment(chat.date.getTime()).tz('Asia/Seoul').format("HH:mm");
+				seouldate = moment(current_chat.date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
+				seoultime = moment(current_chat.date.getTime()).tz('Asia/Seoul').format("HH:mm");
+				io.to(socket.id).emit('receive my message',msg,seouldate,seoultime);
+				socket.broadcast.emit('receive other message',msg,seouldate,seoultime);
 			});
-			io.to(socket.id).emit('receive my message',msg,seouldate,seoultime);
-			socket.broadcast.emit('receive other message',msg,seouldate,seoultime);
 			/*
 			if(userId == undefined){
 				io.emit('receive other message',msg);
