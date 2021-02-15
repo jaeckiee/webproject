@@ -65,5 +65,5 @@ router.get('/login/naver/callback', passport.authenticate('naver-login',{
 
 
 
-
-module.exports = router;
+export default router;
+// module.exports = router;

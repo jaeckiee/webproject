@@ -1,6 +1,6 @@
 // models/Comment.js
 
-var mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 // schema
 var commentSchema = mongoose.Schema({
@@ -17,4 +17,5 @@ var commentSchema = mongoose.Schema({
 
 // model & export
 var Comment = mongoose.model('comment',commentSchema);
-module.exports = Comment;
+export default Comment;
+// module.exports = Comment;

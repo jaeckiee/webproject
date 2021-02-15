@@ -281,8 +281,8 @@ router.get('/:id/hists/:hid/edit', util.isLoggedin, checkPermission, function(re
 
 
 
-
-module.exports = router;
+export default router;
+// module.exports = router;
 
 
 //////////////////////////////////////////////////////////////// PRIVATE FUNCTIONS

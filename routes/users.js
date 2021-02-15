@@ -95,7 +95,8 @@ router.delete('/:username', function(req, res) {
     });
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;
 
 // Private functions
 function checkPermission(req, res, next) {

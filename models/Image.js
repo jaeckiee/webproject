@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 // schema
 var imageSchema = mongoose.Schema({
@@ -10,4 +10,5 @@ var imageSchema = mongoose.Schema({
 // model & export
 var Image = mongoose.model('image', imageSchema);
 
-module.exports = Image;
+export default Image;
+// module.exports = Image;

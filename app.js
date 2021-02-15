@@ -17,11 +17,12 @@ import util from "./util.js";
 import moment from "moment-timezone";
 //사용자 ip를 가져오기 위한 모듈
 import requestIp from "request-ip";
+import httpReq from "http";
+import { Server } from "socket.io";
 const app = express();
+const http = httpReq.Server(app);
+const io = new Server(http);
 const PORT = 3000;
-const http = require('http').Server(app);
-var io = require('socket.io')(http);
-var path = require('path');
 
 http.listen(PORT, function(){ 
 	console.log('server on..');
@@ -48,7 +49,7 @@ db.on('error',(err) => {
 
 //app.listen(PORT, (req,res) => console.log(`server start`));
 app.set("view engine", "pug");
-app.use(express.static(__dirname+'/public'));
+app.use(express.static("./public"));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "100mb" }));	// PayloadTooLargeError 해결
 app.use(bodyParser.urlencoded({ extended: true, limit: "100mb", extended: false }));
@@ -155,7 +156,7 @@ io.on('connection',function(socket){
 });
 
 app.get("/chat",function(req,res,next){
-	console.log(req.user);
+	// console.log(req.user);
 	res.json(req.user);
 });
 app.use(function(req, res, next){

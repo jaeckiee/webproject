@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 // schema
 var historySchema = mongoose.Schema({
@@ -13,4 +13,5 @@ var historySchema = mongoose.Schema({
 
 // model & export
 var History = mongoose.model('history', historySchema);
-module.exports = History;
+export default History;
+// module.exports = History;

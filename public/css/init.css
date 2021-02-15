@@ -42,3 +42,8 @@
 	padding : 5px;
 	margin : 5px;
 }
+
+#container {
+	background: #fff;
+	padding: 15px;
+}

@@ -1,8 +1,12 @@
 import passport from "passport";
 import User from "../models/User.js";
 
-var LocalStrategy = require('passport-local').Strategy;
-var NaverStrategy = require('passport-naver').Strategy;
+import PassportLocal from "passport-local";
+import PassportNaver from "passport-naver";
+var LocalStrategy = PassportLocal.Strategy;
+var NaverStrategy = PassportNaver.Strategy;
+// var LocalStrategy = require('passport-local').Strategy;
+// var NaverStrategy = require('passport-naver').Strategy;
 
 passport.serializeUser((user,done) => {
 	console.log('passport session save:', user);
