@@ -22,9 +22,8 @@ import { Server } from "socket.io";
 const app = express();
 const http = httpReq.Server(app);
 const io = new Server(http);
-const PORT = 3000;
 
-http.listen(PORT, function(){ 
+http.listen(process.env.PORT || 3000, function(){ 
 	console.log('server on..');
 });
 
