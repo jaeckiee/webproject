@@ -135,7 +135,9 @@ io.on('connection',function(socket){
 			for(var i in chats){
 				var seouldate = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("YYYY-MM-DD");
 				var seoultime = moment(chats[i].date.getTime()).tz('Asia/Seoul').format("HH:mm");
-				var msg = chats[i].username + '(' + ((chats[i].ip != undefined)?chats[i].ip.substring(7,13):"") + ')' + ' : ' + chats[i].comment;
+				var ip = (chats[i].ip != undefined) ? chats[i].ip.substring(7,) : "";
+				ip = (ip != "") ? ip.split('.')[0] + '.' + ip.split('.')[1] : "";
+				var msg = chats[i].username + '(' + ip + ')' + ' : ' + chats[i].comment;
 				if(userId == undefined){
 					//로그인 안한 경우
 					io.to(socket.id).emit('receive other message',msg,seouldate,seoultime);

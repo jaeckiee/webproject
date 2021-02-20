@@ -28,10 +28,10 @@ html
 						hr
 					div
 						a.btn.btn-primary(href="/posts") Back
-						if (isAuthenticated)
-							a.btn.btn-primary(href="/posts/"+post._id+"/edit") Edit
-							form(action="/posts/"+post._id+"?_method=delete", method="post", style="display: inline")
-								button.btn.btn-danger(type="submit") Delete
+						a.btn.btn-primary(href="/posts/"+post._id+"/edit") Edit
+						//- if (isAuthenticated)
+						form(action="/posts/"+post._id+"?_method=delete", method="post", style="display: inline")
+							button.btn.btn-danger(type="submit") Delete
 				div.col-md-3
 					include ../partials/aside.pug
 					include ../chat/chat.pug

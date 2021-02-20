@@ -48,7 +48,7 @@ passport.use('naver-login',
 			 new NaverStrategy({
 	clientID: "N_oyYPyV2ByoW35pUP1F",
 	clientSecret: "NPzMLHo1oQ",
-	callbackURL: "https://webproject-ijmyy.run.goorm.io/login/naver/callback"
+	callbackURL: "https://eightwiki.herokuapp.com/login/naver/callback"
 },	
 	(accessToken, refreshToken, profile,done) => {
 		console.log(profile);

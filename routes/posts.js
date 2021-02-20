@@ -18,6 +18,9 @@ router.get('/', function(req, res) {
     .sort('-createdAt')
     .exec(function(err, posts) {
         if (err) return res.json(err);
+
+		req.flash('url');
+		req.flash('url', req.originalUrl);
         res.render('posts/index', { posts: posts });
     });
 });
@@ -28,6 +31,9 @@ router.get('/search', function(req, res) {
 	.populate('author')
     .exec(function(err, posts) {
         if (err) return res.json(err);
+		
+		req.flash('url');
+		req.flash('url', req.originalUrl);
         res.render('posts/search', { posts: posts });
     });
 });
@@ -49,6 +55,9 @@ router.get('/search/autocomplete', function(req, res, next) {
 router.get('/new', util.isLoggedin, function(req, res) {
     var post = req.flash('post')[0] || {};
     var errors = req.flash('errors')[0] || {};
+	
+	req.flash('url');
+	req.flash('url', req.originalUrl);
     res.render('posts/new', { post: post, errors: errors });
 });
 
@@ -98,6 +107,9 @@ router.get('/:id', function(req, res) {
 	.populate({ path: 'author', select: 'username' })
 	.exec(function(err, post) {
 		if (err) return res.json(err);
+		
+		req.flash('url');
+		req.flash('url', req.originalUrl);
 		res.render('posts/show', { post:post });
 	});
 });
@@ -109,11 +121,17 @@ router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res) {
     if (!post) {
         Post.findOne({_id: req.params.id}, function(err, post) {
             if (err) return res.json(err);
+			
+			req.flash('url');
+			req.flash('url', req.originalUrl);
             res.render('posts/edit', { post: post, errors: errors });
         });
     }
     else {
         post._id = req.params.id;
+		
+		req.flash('url');
+		req.flash('url', req.originalUrl);
         res.render('posts/edit', { post: post, errors: errors });
     }
 });
@@ -193,45 +211,51 @@ router.get('/imgs/:id', function(req, res) {
 
 // comment create
 router.post('/:id/comment',util.isLoggedin, checkPostId, function(req, res){ // 1
-  var post = res.locals.post; // 1-1
-  req.body.author = req.user._id; // 2
-  req.body.authorname=req.user.name;
-  req.body.post = req.params.id;// 2
-  Comment.create(req.body, function(err, post){
-    if(err) return res.json(err);
-    return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
-  });
+	var post = res.locals.post; // 1-1
+	req.body.author = req.user._id; // 2
+	req.body.authorname=req.user.name;
+	req.body.post = req.params.id;// 2
+	Comment.create(req.body, function(err, post){
+		if(err) return res.json(err);
+		
+		req.flash('url');
+		req.flash('url', req.originalUrl);
+		return res.redirect('/posts/'+req.params.id+res.locals.getPostQueryString()+'/comment')
+	});
 });
 
 // comment index
 router.get('/:id/comment', function(req, res){ 
-  var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
-  var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
-  Promise.all([
-      Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
-      Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
-    ])
-    .then(([post, comments]) => {
-      res.render('posts/comment', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
-    })
-    .catch((err) => {
-      console.log('err: ', err);
-      return res.json(err);
-    });
-});
+	var commentForm = req.flash('commentForm')[0] || {_id: null, form: {}};
+	var commentError = req.flash('commentError')[0] || { _id:null, parentComment: null, errors:{}};
+	Promise.all([
+		Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }),
+		Comment.find({post:req.params.id}).sort('createdAt').populate({ path: 'author', select: 'username' })
+		])
+		.then(([post, comments]) => {
+
+			req.flash('url');
+			req.flash('url', req.originalUrl);
+			res.render('posts/comment', { post:post, comments:comments, commentForm:commentForm, commentError:commentError});
+		})
+		.catch((err) => {
+			console.log('err: ', err);
+			return res.json(err);
+		});
+});                                                                   
 
 // comment destroy
 router.delete('/:id/comment', util.isLoggedin, checkPermission2, checkPostId, function(req, res){
-  var post = res.locals.post;
-  var post_Id;
-  req.body.author = req.user._id; // 2
-  Comment.findOne({_id:req.params.id},function(err,comment){
-		post_Id = comment.post
-	})
-  Comment.deleteOne({_id: req.params.id}, function(err,comment){
-	  if(err) return res.json(err);
-	  return res.redirect('/posts/'+post_Id+res.locals.getPostQueryString()+'/comment');
-					});
+	var post = res.locals.post;
+	var post_Id;
+	req.body.author = req.user._id; // 2
+	Comment.findOne({_id:req.params.id},function(err,comment){
+			post_Id = comment.post
+		})
+	Comment.deleteOne({_id: req.params.id}, function(err,comment){
+		if(err) return res.json(err);
+		return res.redirect('/posts/'+post_Id+res.locals.getPostQueryString()+'/comment');
+	});
 });
 
 
@@ -244,7 +268,13 @@ router.get('/:id/hists', function(req, res) {
 	.sort('-updatedAt')
 	.exec(function(err, hists) {
 		console.log(hists);
-		if (err) return res.json(err);
+		if (err) {
+			console.log('err: ', err);
+			return res.json(err);
+		}
+
+		req.flash('url');
+		req.flash('url', req.originalUrl);
 		res.render('hists/index', { hists: hists });
 	});
 });
@@ -258,6 +288,9 @@ router.get('/:id/hists/:hid', function(req, res) {
 			console.log('err: ', err);
 			return res.json(err);
 		}
+
+		req.flash('url');
+		req.flash('url', req.originalUrl);
 		res.render('hists/show', { hist: hist });
 	});
 });
@@ -269,11 +302,17 @@ router.get('/:id/hists/:hid/edit', util.isLoggedin, checkPermission, function(re
     if (!post) {
         History.findOne({_id: req.params.hid}, function(err, post) {
             if (err) return res.json(err);
+
+			req.flash('url');
+			req.flash('url', req.originalUrl);
             res.render('posts/edit', { post: post, errors: errors });
         });
     }
     else {
         post._id = req.params.hid;
+
+		req.flash('url');
+		req.flash('url', req.originalUrl);
         res.render('posts/edit', { post: post, errors: errors });
     }
 });
@@ -289,27 +328,28 @@ export default router;
 
 // 로그인 여부를 확인한 다음 블랙된 사람인지 체크
 function checkPermission(req, res, next) {
-   User.findOne({_id: req.user.id}, function(err, user) {
-      if (err) return res.json(err);
-      if (user.blacklist == false) return util.noPermission(req, res);
-      
-      next();
-   });
+	User.findOne({_id: req.user.id}, function(err, user) {
+		if (err) return res.json(err);
+		if (user.blacklist == false) {
+			return util.noPermission(req, res);
+		}
+		next();
+	});
 }
 
 function checkPermission2(req, res, next){ 
-  Comment.findOne({_id:req.params.id}, function(err, comment){
-    if(err) return res.json(err);
-    if(comment.author != req.user.id) return util.noPermission(req, res);
-    next();
-  });
+	Comment.findOne({_id:req.params.id}, function(err, comment){
+		if(err) return res.json(err);
+		if(comment.author != req.user.id) return util.noPermission(req, res);
+		next();
+	});
 }
 
 function checkPostId(req, res, next){ // 1
-  Post.findOne({_id:req.query.postId},function(err, post){
-    if(err) return res.json(err);
+	Post.findOne({_id:req.query.postId},function(err, post){
+		if(err) return res.json(err);
 
-    res.locals.post = post; // 1-1
-    next();
-  });
+		res.locals.post = post; // 1-1
+		next();
+	});
 }

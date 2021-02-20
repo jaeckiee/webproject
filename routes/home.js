@@ -23,7 +23,7 @@ router.get('/login', function(req, res) {
 // Post Login
 router.post('/login',
 	function(req, res, next) {
-		var errors= {};
+		var errors = {};
 		var isValid = true;
 
 		if (!req.body.username) {
@@ -39,12 +39,16 @@ router.post('/login',
 		else {
 			req.flash('errors', errors);
 			res.redirect('/login');
+
 		}
 	},
 	passport.authenticate('local-login', {
-		successRedirect : '/posts',
 		failureRedirect : '/login'
-	})
+	}), (req, res) => {
+		var url = req.flash('url')[0];
+		if (url) res.redirect(url);
+		else res.redirect('/');
+	}
 );
 
 // Logout
@@ -62,8 +66,6 @@ router.get('/login/naver/callback', passport.authenticate('naver-login',{
 	failureRedirect: '/users/new',
 	failureFlash : true
 }));
-
-
 
 export default router;
 // module.exports = router;

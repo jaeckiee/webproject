@@ -39,6 +39,7 @@ util.isLoggedin = function(req, res, next){
 		next();
 	} 
 	else {
+		// req.flash('url', req.originalUrl);
 		req.flash('errors', {login:'Please login first'});
 		res.redirect('/login');
 	}
@@ -68,10 +69,14 @@ util.getPostQueryString = function(req, res, next){
 // 접근권한이 없음을 표현
 util.noPermission = function(req, res) {
 	req.flash('errors', { login: "You don't have permission" });
-	req.logout();
- 	res.redirect('/login');	// 어디로 리다이렉트할 지는 추후 정하기로
+	console.log("NOPERMISSON");
+	// req.logout();
+	// alert("접근 권한이 없습니다.");
+	// console.log(url.format({protocol: req.protocol, host: req.get('host')}));
+ 	res.redirect(req.flash('url')[0]);	// 어디로 리다이렉트할 지는 추후 정하기로
 }
 
+// 210218 파일 첨부가 없어 쓰지 않는 함수
 util.bytesToSize = function(bytes) {
 	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 	if (bytes == 0) return '0 Byte';
